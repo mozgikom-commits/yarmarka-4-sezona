@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f0df">
+  <meta name="description" content="Полный реестр участников ярмарки «4 сезона»: наименования и продукция.">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="stylesheet" href="./styles.css?v=20261117-8">
+  <title>Участники ярмарки — «4 сезона»</title>
+  <script src="./app.js?v=20261117-8" defer></script>
+</head>
+<body class="participants-page">
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./index.html#home" aria-label="Ярмарка «4 сезона» — на главную">
+        <img src="./assets/logo-4-sezona.png" alt="" width="62" height="60">
+        <span class="brand-name">Ярмарка <b>4 сезона</b></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Открыть меню"><span></span><span></span></button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Главная навигация">
+        <a class="nav-link" href="./index.html#home">Главная</a>
+        <a class="nav-link" href="./index.html#participation">Участие</a>
+        <a class="nav-link" href="./index.html#documents">Документы</a>
+        <a class="nav-link active" href="./participants.html">Все участники</a>
+        <a class="nav-link" href="./index.html#reviews">Отзывы</a>
+        <a class="nav-link" href="./index.html#contacts">Контакты</a>
+        <a class="nav-cta" href="./index.html#participation">Стать участником</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="section registry-section full-registry" id="registry" aria-labelledby="registry-title">
+      <div class="section-heading">
+        <p class="eyebrow">Наше сообщество</p>
+        <h1 id="registry-title">Участники ярмарки</h1>
+        <p class="section-lead">Полный каталог участников: наименование и продукция. Ищите по названию или ассортименту, либо выберите категорию.</p>
+      </div>
+      <div class="registry-panel">
+        <div class="registry-controls">
+          <label class="search-field"><span class="visually-hidden">Поиск по участникам</span><input id="registry-search" type="search" placeholder="Поиск по наименованию или продукции" autocomplete="off"></label>
+          <label><span class="visually-hidden">Категория продукции</span><select id="registry-category"><option value="">Все категории продукции</option></select></label>
+          <p class="registry-count" id="registry-count" aria-live="polite">Загружаем реестр…</p>
+        </div>
+        <p class="registry-status" id="registry-status" role="status" aria-live="polite">Загружаем участников…</p>
+        <div class="registry-grid" id="registry-grid" data-registry-mode="full"></div>
+      </div>
+      <div class="registry-return"><a class="button button-green" href="./index.html#registry">На главную ярмарки</a></div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-inner"><a class="brand footer-brand" href="./index.html#home"><img src="./assets/logo-4-sezona.png" alt="" width="45" height="44"><span class="brand-name">Ярмарка <b>4 сезона</b></span></a><p>Свежие продукты. Четыре сезона. Одна ярмарка.</p><div class="footer-links"><a href="./docs/public-offer.html">Публичная оферта</a><a href="./docs/privacy-policy.html">Политика обработки персональных данных</a></div></div>
+  </footer>
+</body>
+</html>
