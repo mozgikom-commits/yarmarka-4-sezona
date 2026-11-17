@@ -50,6 +50,25 @@
       </div>
     </section>
 
+    <section class="schedule-section" id="schedule" aria-labelledby="schedule-title">
+      <div class="schedule-inner">
+        <div class="schedule-heading">
+          <p class="eyebrow">Для гостей и участников</p>
+          <h2 id="schedule-title">Режим работы ярмарки «4 сезона»</h2>
+          <p>Торговые места должны быть готовы к открытию, а территория освобождена после завершения работы.</p>
+        </div>
+        <div class="schedule-content">
+          <article class="schedule-buyers"><span>Для покупателей</span><strong>08:00–19:00</strong></article>
+          <div class="schedule-timeline" aria-label="Расписание участников">
+            <div><time>07:00–08:00</time><span><b>Заезд и подготовка</b><small>Подготовка торговых мест к открытию</small></span></div>
+            <div><time>08:00–19:00</time><span><b>Торговля</b><small>Торговые места готовы к 08:00</small></span></div>
+            <div><time>19:00–20:00</time><span><b>Уборка и выезд</b><small>Погрузка оборудования; территорию освободить не позднее 20:00</small></span></div>
+          </div>
+          <p class="schedule-note">Движение автомобилей участников допускается с 07:00 до 08:00 и с 19:00 до 20:00, кроме случаев, согласованных с администрацией ярмарки.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="category-band" aria-label="Категории продукции">
       <div class="category-list">
         <a class="category-pill" href="#products"><span class="category-mark mark-green"></span>Овощи и зелень</a>
@@ -115,13 +134,12 @@
       <div class="section-heading">
         <p class="eyebrow">Наше сообщество</p>
         <h2 id="registry-title">Реестр участников</h2>
-        <p class="section-lead">Публикуются только сведения, разрешённые к открытому размещению. Список можно искать по названию, продукции и населённому пункту.</p>
+        <p class="section-lead">Публикуются только наименование участника и ИНН для записей с подтверждённым основанием. Поиск работает по обоим полям.</p>
       </div>
       <div class="registry-panel">
         <div class="registry-controls">
-          <label class="search-field"><span class="visually-hidden">Поиск по участникам</span><input id="registry-search" type="search" placeholder="Название, продукция или населённый пункт" autocomplete="off"></label>
-          <label><span class="visually-hidden">Категория</span><select id="registry-category"><option value="">Все категории</option></select></label>
-          <label><span class="visually-hidden">Населённый пункт</span><select id="registry-locality"><option value="">Все населённые пункты</option></select></label>
+          <label class="search-field"><span class="visually-hidden">Поиск по участникам</span><input id="registry-search" type="search" placeholder="Поиск по наименованию или ИНН" autocomplete="off"></label>
+          <p class="registry-count" id="registry-count" aria-live="polite">Загружаем реестр…</p>
         </div>
         <p class="registry-status" id="registry-status" role="status" aria-live="polite">Загружаем открытый реестр…</p>
         <div class="registry-grid" id="registry-grid"></div>
@@ -142,7 +160,7 @@
   </main>
 
   <footer class="site-footer">
-    <div class="footer-inner"><a class="brand footer-brand" href="#home"><img src="./assets/logo-4-sezona.png" alt="" width="45" height="44"><span class="brand-name">Ярмарка <b>4 сезона</b></span></a><p>Свежие продукты. Четыре сезона. Одна ярмарка.</p><div class="footer-links"><a href="https://disk.360.yandex.ru/d/u91i7QVHA8Xlaw?download=1" target="_blank" rel="noopener noreferrer">Публичная оферта</a><span class="footer-policy">Политика обработки персональных данных — ожидает проверки оригинала</span></div><small>Иллюстрации на сайте не изображают реальных участников ярмарки.</small></div>
+    <div class="footer-inner"><a class="brand footer-brand" href="#home"><img src="./assets/logo-4-sezona.png" alt="" width="45" height="44"><span class="brand-name">Ярмарка <b>4 сезона</b></span></a><p>Свежие продукты. Четыре сезона. Одна ярмарка.</p><div class="footer-links"><a href="https://disk.360.yandex.ru/d/u91i7QVHA8Xlaw?download=1" target="_blank" rel="noopener noreferrer">Публичная оферта</a><span class="footer-policy">Политика обработки персональных данных — оригинал ожидает разрешения на публикацию</span></div><small>Иллюстрации на сайте не изображают реальных участников ярмарки.</small></div>
   </footer>
 </body>
 </html>
