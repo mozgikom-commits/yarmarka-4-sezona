@@ -26,29 +26,52 @@
   updateActiveLink();
 
   const search = document.querySelector('#registry-search');
+  const category = document.querySelector('#registry-category');
   const status = document.querySelector('#registry-status');
   const count = document.querySelector('#registry-count');
   const grid = document.querySelector('#registry-grid');
   const normalize = (value) => String(value ?? '').toLocaleLowerCase('ru').trim();
+  const categoryRules = [
+    { name: 'Овощи и зелень', test: /овощ|корнеплод|ягод|фрукт|бахч|зелень/ },
+    { name: 'Молочная продукция', test: /молок|молоч|сыр/ },
+    { name: 'Мясные изделия', test: /мяс|колбас|птиц/ },
+    { name: 'Рыба и рыбная продукция', test: /рыб|морепродукт/ },
+    { name: 'Выпечка и сладости', test: /хлеб|булоч|кондитер|слад|выпеч/ },
+    { name: 'Заготовки, мёд и дикоросы', test: /консерв|солен|квашен|м[её]д|пчел|заготов|дикорос|сухофрукт|пряност|приправ/ },
+    { name: 'Напитки', test: /квас|вода/ }
+  ];
+  const categoriesFor = (products) => {
+    const value = normalize(products);
+    return categoryRules.filter((item) => item.test.test(value)).map((item) => item.name);
+  };
+
+  categoryRules.forEach((item) => category?.add(new Option(item.name, item.name)));
 
   const renderRegistry = (records) => {
     const query = normalize(search?.value);
-    const filtered = records.filter((item) =>
-      normalize(`${item.name ?? ''} ${item.inn ?? ''}`).includes(query)
-    );
+    const selectedCategory = category?.value ?? '';
+    const filtered = records.filter((item) => {
+      const matchesText = !query || normalize(`${item.name ?? ''} ${item.products ?? ''}`).includes(query);
+      const matchesCategory = !selectedCategory || categoriesFor(item.products).includes(selectedCategory);
+      return matchesText && matchesCategory;
+    });
     grid.replaceChildren();
     count.textContent = `Опубликовано: ${records.length} из 102`;
     status.textContent = filtered.length
       ? `Найдено участников: ${filtered.length}`
-      : (records.length ? 'По вашему запросу ничего не найдено.' : 'Пока нет записей, для которых подтверждено основание публичного размещения.');
+      : (records.length ? 'По запросу и выбранной категории записей нет.' : 'Пока нет записей, для которых подтверждено основание публичного размещения.');
     filtered.forEach((item) => {
       const card = document.createElement('article');
       card.className = 'registry-card';
       const title = document.createElement('h3');
       title.textContent = item.name;
       const details = document.createElement('p');
-      details.className = 'registry-inn';
-      details.textContent = `ИНН: ${item.inn}`;
+      details.className = 'registry-products';
+      const label = document.createElement('strong');
+      label.textContent = 'Продукция: ';
+      const value = document.createElement('span');
+      value.textContent = item.products;
+      details.append(label, value);
       card.append(title, details);
       grid.append(card);
     });
@@ -62,7 +85,7 @@
       const records = Array.isArray(payload) ? payload : payload.participants;
       if (!Array.isArray(records)) throw new Error('registry_invalid');
       renderRegistry(records);
-      search?.addEventListener('input', () => renderRegistry(records));
+      [search, category].forEach((field) => field?.addEventListener(field === search ? 'input' : 'change', () => renderRegistry(records)));
     } catch (_) {
       count.textContent = 'Реестр временно недоступен';
       status.textContent = 'Не удалось загрузить открытый реестр. Попробуйте обновить страницу позже.';
