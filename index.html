@@ -7,9 +7,9 @@
   <meta name="description" content="Ярмарка «4 сезона» во Владивостоке — местные продукты, фермеры и производители Приморского края.">
   <link rel="icon" href="./assets/favicon.png" type="image/png">
   <link rel="preload" as="image" href="./assets/hero-farmers.webp" imagesrcset="./assets/hero-farmers-720.webp 720w, ./assets/hero-farmers.webp 1320w" imagesizes="(max-width: 899px) 100vw, 60vw" fetchpriority="high">
-  <link rel="stylesheet" href="./styles.css?v=20261117-5">
+  <link rel="stylesheet" href="./styles.css?v=20261117-6">
   <title>Ярмарка «4 сезона» — вкусно, свежо, по-приморски</title>
-  <script src="./app.js?v=20261117-5" defer></script>
+  <script src="./app.js?v=20261117-6" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержанию</a>
@@ -134,11 +134,12 @@
       <div class="section-heading">
         <p class="eyebrow">Наше сообщество</p>
         <h2 id="registry-title">Реестр участников</h2>
-        <p class="section-lead">Публикуются только наименование участника и ИНН для записей с подтверждённым основанием. Поиск работает по обоим полям.</p>
+        <p class="section-lead">В реестре указаны наименования участников и продукция из исходного списка. Поиск работает по названию и ассортименту; записи с персональными именами публикуются только при наличии разрешения на распространение.</p>
       </div>
       <div class="registry-panel">
         <div class="registry-controls">
-          <label class="search-field"><span class="visually-hidden">Поиск по участникам</span><input id="registry-search" type="search" placeholder="Поиск по наименованию или ИНН" autocomplete="off"></label>
+          <label class="search-field"><span class="visually-hidden">Поиск по участникам</span><input id="registry-search" type="search" placeholder="Поиск по наименованию или продукции" autocomplete="off"></label>
+          <label><span class="visually-hidden">Категория продукции</span><select id="registry-category"><option value="">Все категории продукции</option></select></label>
           <p class="registry-count" id="registry-count" aria-live="polite">Загружаем реестр…</p>
         </div>
         <p class="registry-status" id="registry-status" role="status" aria-live="polite">Загружаем открытый реестр…</p>
