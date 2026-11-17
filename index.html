@@ -7,9 +7,9 @@
   <meta name="description" content="Ярмарка «4 сезона» во Владивостоке — местные продукты, фермеры и производители Приморского края.">
   <link rel="icon" href="./assets/favicon.png" type="image/png">
   <link rel="preload" as="image" href="./assets/hero-farmers.webp" imagesrcset="./assets/hero-farmers-720.webp 720w, ./assets/hero-farmers.webp 1320w" imagesizes="(max-width: 899px) 100vw, 60vw" fetchpriority="high">
-  <link rel="stylesheet" href="./styles.css?v=20261117-7">
+  <link rel="stylesheet" href="./styles.css?v=20261117-8">
   <title>Ярмарка «4 сезона» — вкусно, свежо, по-приморски</title>
-  <script src="./app.js?v=20261117-7" defer></script>
+  <script src="./app.js?v=20261117-8" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержанию</a>
@@ -120,13 +120,14 @@
       <div class="section documents-inner">
         <div class="section-heading align-left"><p class="eyebrow">Важная информация</p><h2 id="documents-title">Документы ярмарки</h2><p class="section-lead">Откройте оригинальные перечни и формы участия. Публичная оферта доступна в PDF-источнике организатора.</p></div>
         <div class="legal-links">
-          <a href="https://disk.360.yandex.ru/d/u91i7QVHA8Xlaw?download=1" target="_blank" rel="noopener noreferrer"><span>01</span><b>Публичная оферта · PDF</b><i aria-hidden="true">↗</i></a>
-          <div class="legal-unavailable"><span>02</span><b>Политика обработки персональных данных</b><span class="doc-status">Оригинал ожидает проверки перед публикацией</span></div>
+          <a href="./docs/public-offer.html"><span>01</span><b>Публичная оферта — читать</b><i aria-hidden="true">↗</i></a>
+          <div class="legal-doc-actions"><a class="button" href="https://disk.360.yandex.ru/d/u91i7QVHA8Xlaw?download=1" target="_blank" rel="noopener noreferrer">Скачать оригинальный PDF</a></div>
+          <a href="./docs/privacy-policy.html"><span>02</span><b>Политика обработки персональных данных — читать</b><i aria-hidden="true">↗</i></a>
+          <div class="legal-doc-actions"><a href="./docs/privacy-policy.html#print">Сохранить страницу в PDF</a></div>
           <a href="./docs/docs-legal.html"><span>03</span><b>Документы юридических лиц</b><i aria-hidden="true">↗</i></a>
           <a href="./docs/docs-ip.html"><span>04</span><b>Документы индивидуальных предпринимателей</b><i aria-hidden="true">↗</i></a>
           <a href="./docs/docs-citizens.html"><span>05</span><b>Документы граждан, ЛПХ и КФХ</b><i aria-hidden="true">↗</i></a>
-          <p class="registry-status">Оригинальные перечни и формы открываются в отдельных страницах и источниках организатора. Политика не опубликована, пока не подтверждена безопасная публикация исходного текста.</p>
-        </div>
+        </div>/div>
       </div>
     </section>
 
@@ -134,16 +135,13 @@
       <div class="section-heading">
         <p class="eyebrow">Наше сообщество</p>
         <h2 id="registry-title">Реестр участников</h2>
-        <p class="section-lead">В реестре — участники, прошедшие верификацию и подписавшие согласие на публикацию. Указаны только наименование и продукция; поиск и фильтр работают по ассортименту.</p>
+        <p class="section-lead">В реестре — участники, прошедшие верификацию и подписавшие согласие на публикацию. На главной — четыре участника; полный каталог доступен отдельно.</p>
       </div>
       <div class="registry-panel">
-        <div class="registry-controls">
-          <label class="search-field"><span class="visually-hidden">Поиск по участникам</span><input id="registry-search" type="search" placeholder="Поиск по наименованию или продукции" autocomplete="off"></label>
-          <label><span class="visually-hidden">Категория продукции</span><select id="registry-category"><option value="">Все категории продукции</option></select></label>
-          <p class="registry-count" id="registry-count" aria-live="polite">Загружаем реестр…</p>
-        </div>
+        <p class="registry-count" id="registry-count" aria-live="polite">Загружаем реестр…</p>
         <p class="registry-status" id="registry-status" role="status" aria-live="polite">Загружаем открытый реестр…</p>
-        <div class="registry-grid" id="registry-grid"></div>
+        <div class="registry-grid" id="registry-grid" data-registry-mode="preview"></div>
+        <div class="registry-more"><a class="button button-green" href="./participants.html">Смотреть всех участников</a></div>
       </div>
     </section>
 
@@ -161,7 +159,7 @@
   </main>
 
   <footer class="site-footer">
-    <div class="footer-inner"><a class="brand footer-brand" href="#home"><img src="./assets/logo-4-sezona.png" alt="" width="45" height="44"><span class="brand-name">Ярмарка <b>4 сезона</b></span></a><p>Свежие продукты. Четыре сезона. Одна ярмарка.</p><div class="footer-links"><a href="https://disk.360.yandex.ru/d/u91i7QVHA8Xlaw?download=1" target="_blank" rel="noopener noreferrer">Публичная оферта</a><span class="footer-policy">Политика обработки персональных данных — оригинал ожидает разрешения на публикацию</span></div><small>Иллюстрации на сайте не изображают реальных участников ярмарки.</small></div>
+    <div class="footer-inner"><a class="brand footer-brand" href="#home"><img src="./assets/logo-4-sezona.png" alt="" width="45" height="44"><span class="brand-name">Ярмарка <b>4 сезона</b></span></a><p>Свежие продукты. Четыре сезона. Одна ярмарка.</p><div class="footer-links"><a href="./docs/public-offer.html">Публичная оферта</a><a href="./docs/privacy-policy.html">Политика обработки персональных данных</a><a href="./participants.html">Все участники</a></div><small>Иллюстрации на сайте не изображают реальных участников ярмарки.</small></div>
   </footer>
 </body>
 </html>
