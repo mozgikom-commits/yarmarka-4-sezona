@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f7f0df">
   <meta name="description" content="Полный реестр участников ярмарки «4 сезона»: наименования и продукция.">
   <link rel="icon" href="./assets/favicon.png" type="image/png">
-  <link rel="stylesheet" href="./styles.css?v=20261117-8">
+  <link rel="stylesheet" href="./styles.css?v=20261117-9">
   <title>Участники ярмарки — «4 сезона»</title>
   <script src="./app.js?v=20261117-8" defer></script>
 </head>
@@ -40,7 +40,7 @@
       <div class="registry-panel">
         <div class="registry-controls">
           <label class="search-field"><span class="visually-hidden">Поиск по участникам</span><input id="registry-search" type="search" placeholder="Поиск по наименованию или продукции" autocomplete="off"></label>
-          <label><span class="visually-hidden">Категория продукции</span><select id="registry-category"><option value="">Все категории продукции</option></select></label>
+          <label class="category-field"><span class="visually-hidden">Категория продукции</span><select id="registry-category" aria-label="Категория продукции"><option value="">Все категории продукции</option></select></label>
           <p class="registry-count" id="registry-count" aria-live="polite">Загружаем реестр…</p>
         </div>
         <p class="registry-status" id="registry-status" role="status" aria-live="polite">Загружаем участников…</p>
