@@ -49,6 +49,29 @@
   };
 
   categoryRules.forEach((item) => category?.add(new Option(item.name, item.name)));
+  const chips = document.querySelector('#registry-chips');
+  if (chips && category) {
+    const choices = [{ name: 'Все продукты', value: '' }, ...categoryRules.map(({ name }) => ({ name, value: name }))];
+    choices.forEach(({ name, value }) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'registry-chip';
+      button.textContent = name;
+      button.dataset.category = value;
+      button.addEventListener('click', () => {
+        category.value = value;
+        category.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      chips.append(button);
+    });
+    const syncChips = () => chips.querySelectorAll('.registry-chip').forEach((button) => {
+      const active = button.dataset.category === category.value;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    category.addEventListener('change', syncChips);
+    syncChips();
+  }
 
   const renderRegistry = (records) => {
     const query = normalize(search?.value);
