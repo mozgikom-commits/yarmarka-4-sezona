@@ -26,35 +26,29 @@
   updateActiveLink();
 
   const search = document.querySelector('#registry-search');
-  const category = document.querySelector('#registry-category');
-  const locality = document.querySelector('#registry-locality');
   const status = document.querySelector('#registry-status');
+  const count = document.querySelector('#registry-count');
   const grid = document.querySelector('#registry-grid');
   const normalize = (value) => String(value ?? '').toLocaleLowerCase('ru').trim();
 
   const renderRegistry = (records) => {
     const query = normalize(search?.value);
-    const selectedCategory = category?.value ?? '';
-    const selectedLocality = locality?.value ?? '';
-    const filtered = records.filter((item) => {
-      const haystack = normalize([item.name, item.products, item.assortment, item.locality].join(' '));
-      return (!query || haystack.includes(query))
-        && (!selectedCategory || item.category === selectedCategory)
-        && (!selectedLocality || item.locality === selectedLocality);
-    });
+    const filtered = records.filter((item) =>
+      normalize(`${item.name ?? ''} ${item.inn ?? ''}`).includes(query)
+    );
     grid.replaceChildren();
-    if (!records.length) {
-      status.textContent = 'Открытые сведения участников пока не опубликованы. Список появится после сверки разрешённых к размещению данных.';
-      return;
-    }
-    status.textContent = filtered.length ? `Найдено участников: ${filtered.length}` : 'По вашему запросу ничего не найдено.';
+    count.textContent = `Опубликовано: ${records.length} из 102`;
+    status.textContent = filtered.length
+      ? `Найдено участников: ${filtered.length}`
+      : (records.length ? 'По вашему запросу ничего не найдено.' : 'Пока нет записей, для которых подтверждено основание публичного размещения.');
     filtered.forEach((item) => {
       const card = document.createElement('article');
       card.className = 'registry-card';
       const title = document.createElement('h3');
-      title.textContent = item.name || 'Участник ярмарки';
+      title.textContent = item.name;
       const details = document.createElement('p');
-      details.textContent = [item.category, item.products || item.assortment, item.locality].filter(Boolean).join(' · ');
+      details.className = 'registry-inn';
+      details.textContent = `ИНН: ${item.inn}`;
       card.append(title, details);
       grid.append(card);
     });
@@ -67,13 +61,10 @@
       const payload = await response.json();
       const records = Array.isArray(payload) ? payload : payload.participants;
       if (!Array.isArray(records)) throw new Error('registry_invalid');
-      const categories = [...new Set(records.map((item) => item.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ru'));
-      const localities = [...new Set(records.map((item) => item.locality).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ru'));
-      categories.forEach((value) => category.add(new Option(value, value)));
-      localities.forEach((value) => locality.add(new Option(value, value)));
-      [search, category, locality].forEach((field) => field?.addEventListener(field === search ? 'input' : 'change', () => renderRegistry(records)));
       renderRegistry(records);
+      search?.addEventListener('input', () => renderRegistry(records));
     } catch (_) {
+      count.textContent = 'Реестр временно недоступен';
       status.textContent = 'Не удалось загрузить открытый реестр. Попробуйте обновить страницу позже.';
     }
   };
