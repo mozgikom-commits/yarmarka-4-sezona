@@ -108,10 +108,10 @@ button, input, select { font: inherit; }
 .registry-section { padding-bottom: 62px; }
 .registry-panel { max-width: 1050px; margin: auto; padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: var(--paper); box-shadow: var(--shadow); }
 .registry-controls { display: grid; grid-template-columns: 1fr; gap: 9px; }
-.registry-controls { grid-template-columns: minmax(0,1fr) auto; align-items: center; }
+.registry-controls { grid-template-columns: minmax(0,1fr); align-items: stretch; }
 .registry-controls input { width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid #d5c9b3; border-radius: 12px; background: white; color: #33382f; font: inherit; font-size: 16px; }
 .registry-controls input:focus { outline: 3px solid #d8e8ce; border-color: var(--green-dark); }
-.registry-count { margin: 0; color: var(--green-dark); font-size: 14px; font-weight: 800; white-space: nowrap; }
+.registry-count { margin: 0; color: var(--green-dark); font-size: 14px; font-weight: 800; white-space: normal; }
 .registry-status { margin: 14px 2px 0; color: #57584e; line-height: 1.55; }
 .registry-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 12px; }
 .registry-card { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(145deg,#fffdf7,#f8f4e9); }
@@ -183,7 +183,6 @@ button, input, select { font: inherit; }
   .category-pill { justify-content: center; padding-inline: 12px; }
   .product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
   .product-card img { aspect-ratio: 1.5 / 1; }
-  .registry-controls { grid-template-columns: minmax(0,1fr) auto; }
   .registry-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .contacts-section { grid-template-columns: 1.4fr .6fr; }
   .contact-links { flex-direction: row; flex-wrap: wrap; gap: 8px 18px; }
@@ -240,7 +239,7 @@ button, input, select { font: inherit; }
   .legal-links a { grid-template-columns: 42px 1fr 24px; gap: 10px; min-height: 64px; padding: 14px 3px; }
   .legal-links b { font-size: 17px; }
   .registry-panel { padding: 24px; border-radius: 22px; }
-  .registry-controls { grid-template-columns: minmax(0,1fr) auto; }
+  .registry-controls { grid-template-columns: minmax(0,1fr) auto; align-items: center; }
   .registry-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .visit-inner, .reviews-inner { flex-direction: row; align-items: center; justify-content: space-between; gap: 25px; padding-block: 48px; }
   .contacts-section { gap: 42px; }
