@@ -43,7 +43,9 @@
   ];
   const categoriesFor = (products) => {
     const value = normalize(products);
-    return categoryRules.filter((item) => item.test.test(value)).map((item) => item.name);
+    // Fish preserves belong to fish, not to vegetable/home preserves.
+    const preservesValue = value.replace(/рыбн(?:ые|ых|ая|ой|ую|ое|ого|ыми)?\s+консерв\w*/g, '');
+    return categoryRules.filter((item) => item.test.test(item.name === 'Заготовки, мёд и дикоросы' ? preservesValue : value)).map((item) => item.name);
   };
 
   categoryRules.forEach((item) => category?.add(new Option(item.name, item.name)));
