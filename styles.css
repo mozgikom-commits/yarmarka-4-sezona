@@ -281,3 +281,19 @@ button, input, select { font: inherit; }
   .legal-doc-actions { grid-column:1 / -1; padding-left:42px; }
 }
 @media print { .site-header,.site-footer,.registry-return { display:none !important; } }
+
+/* Refined catalogue toolbar: consistent controls and independent summary row */
+.participants-page .registry-controls {display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:stretch;margin-bottom:12px;}
+.participants-page .registry-controls .search-field {grid-column:auto;min-width:0;}
+.participants-page .registry-controls .search-field input,
+.participants-page .registry-controls .category-field select {box-sizing:border-box;display:block;width:100%;height:54px;min-height:54px;padding:0 18px;border:1px solid #d9cbb4;border-radius:14px;background:#fffdf8;color:#343e30;font:500 15px/1.3 inherit;box-shadow:0 2px 7px rgba(64,51,30,.035);outline-offset:3px;}
+.participants-page .registry-controls .search-field input:focus,
+.participants-page .registry-controls .category-field select:focus {border-color:#347344;outline:2px solid rgba(52,115,68,.2);}
+.participants-page .registry-controls .category-field {position:relative;display:block;min-width:0;}
+.participants-page .registry-controls .category-field select {appearance:none;-webkit-appearance:none;padding-right:48px;cursor:pointer;font-family:inherit;}
+.participants-page .registry-controls .category-field::after {content:"";position:absolute;right:20px;top:21px;width:9px;height:9px;border-right:2px solid #42634a;border-bottom:2px solid #42634a;transform:rotate(45deg);pointer-events:none;}
+.participants-page .registry-controls .registry-count {grid-column:1/-1;justify-self:start;margin:5px 0 0;padding:7px 13px;border-radius:999px;background:#eaf1e3;color:#285a35;font-size:14px;font-weight:700;}
+.participants-page .registry-status {margin:0 0 16px;color:#6b6d60;font-size:14px;}
+.participants-page .registry-panel {background:#fffdf8;}
+@media(min-width:700px){.participants-page .registry-controls {grid-template-columns:minmax(0,1.35fr) minmax(220px,1fr);column-gap:14px;row-gap:10px;}}
+@media(max-width:699px){.participants-page .registry-panel {padding:16px;}.participants-page .registry-controls .search-field input,.participants-page .registry-controls .category-field select {font-size:16px;}}
