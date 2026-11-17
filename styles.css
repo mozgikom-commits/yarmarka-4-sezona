@@ -262,3 +262,22 @@ button, input, select { font: inherit; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+
+/* Compact homepage registry preview and full catalogue page */
+.registry-preview-note { margin:22px 0 0; color:var(--muted); font-size:15px; }
+.registry-more { display:flex; justify-content:center; margin-top:24px; }
+.registry-more .button { min-height:48px; }
+.full-registry { min-height:calc(100vh - 180px); padding-top:44px; }
+.full-registry .section-heading { max-width:850px; }
+.registry-return { display:flex; justify-content:center; margin-top:26px; }
+.legal-doc-actions { display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; grid-column:2; padding:0 0 14px; }
+.legal-doc-actions a { min-height:44px; display:inline-flex; align-items:center; font-size:14px; font-weight:700; }
+.legal-doc-actions .button { padding:8px 14px; border-radius:999px; background:var(--green); color:#fff; text-decoration:none; }
+.legal-document h3 { color:var(--brown); }
+@media (max-width:899px) {
+  .full-registry { padding-top:26px; }
+  .registry-more { margin-top:18px; }
+  .legal-doc-actions { grid-column:1 / -1; padding-left:42px; }
+}
+@media print { .site-header,.site-footer,.registry-return { display:none !important; } }
