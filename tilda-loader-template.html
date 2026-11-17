@@ -1,22 +1,21 @@
-<!-- Tilda T123: ВСТАВЛЯТЬ ТОЛЬКО ПОСЛЕ РАЗВЁРТЫВАНИЯ И ПРОВЕРКИ -->
-<div id="yarmarka-loading" style="padding:24px;text-align:center">Загрузка сайта ярмарки…</div>
+<!-- Tilda T123: test on a separate Tilda page before replacing the live site. -->
+<div id="yarmarka-host"><div style="padding:24px;text-align:center">Загрузка ярмарки «4 сезона»…</div></div>
 <script>
 (function(){
-  var SITE_URL="https://REPLACE-WITH-VERIFIED-HTTPS-DEPLOYMENT.example";
-  if(SITE_URL.indexOf("REPLACE-WITH")!==-1){
-    document.getElementById("yarmarka-loading").textContent="Загрузчик не настроен: нужен проверенный HTTPS-адрес.";
-    return;
-  }
+  var host=document.getElementById("yarmarka-host");
+  var url="https://mozgikom-commits.github.io/yarmarka-4-sezona/";
   var frame=document.createElement("iframe");
-  frame.src=SITE_URL;
   frame.title="Ярмарка «4 сезона»";
+  frame.src=url;
   frame.loading="eager";
-  frame.style.cssText="display:block;width:100%;min-height:100vh;border:0";
-  document.getElementById("yarmarka-loading").replaceWith(frame);
+  frame.setAttribute("referrerpolicy","strict-origin-when-cross-origin");
+  frame.style.cssText="display:block;width:100%;height:100vh;min-height:650px;border:0;background:#fff9ee";
+  host.replaceChildren(frame);
   window.addEventListener("message",function(e){
-    if(e.origin!==new URL(SITE_URL).origin)return;
-    if(e.data&&e.data.type==="yarmarka-height"&&Number.isFinite(e.data.height))
-      frame.style.height=Math.max(600,Math.ceil(e.data.height))+"px";
+    if(e.source!==frame.contentWindow || e.origin!=="https://mozgikom-commits.github.io")return;
+    if(e.data && e.data.type==="yarmarka-height" && Number.isFinite(e.data.height)){
+      frame.style.height=Math.max(650,Math.ceil(e.data.height)+4)+"px";
+    }
   });
 })();
 </script>
