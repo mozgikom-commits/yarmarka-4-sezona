@@ -1,46 +1,148 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#28763D"><link rel="icon" href="./favicon.svg" type="image/svg+xml"><title>Ярмарка «4 сезона» — Владивосток</title><meta name="description" content="Продовольственная ярмарка «4 сезона», Владивосток, Жигура, 2Б. Участники, документы и обратная связь."><style>
-:root{--g:#2b7a4b;--ink:#1e2b2c;--line:#dde6da}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:var(--ink);background:#f8faf6}a{color:var(--g)}.wrap{max-width:1180px;margin:auto;padding:0 22px}header{background:#fff;border-bottom:1px solid var(--line)}.head{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-top:14px;padding-bottom:14px}.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--g)}.brand img{width:52px;height:52px;object-fit:contain}.brand strong{font:700 25px Georgia,serif}.brand small{display:block;color:#788b7d;letter-spacing:1px;font-size:11px;margin-top:3px}nav{display:flex;flex-wrap:wrap;gap:6px}nav a{padding:11px 13px;border-radius:12px;text-decoration:none;font-weight:700;color:var(--ink)}nav a:hover,nav a.on{background:#eaf3e6;color:var(--g)}.hero{background:linear-gradient(120deg,#f1f7ec,#fff8df);padding:85px 0}.hero-grid{display:grid;grid-template-columns:1.35fr .65fr;align-items:center;gap:45px}.hero img{display:block;width:100%;max-width:440px}.pill{display:inline-block;background:#f5c542;border-radius:30px;padding:12px 20px;font-weight:700}h1{font-size:clamp(39px,5.3vw,74px);letter-spacing:-.05em;line-height:1.13;margin:30px 0}h1 em{font-style:normal;color:var(--g)}.lead{color:#66776b;line-height:1.75;font-size:18px}.btn{display:inline-block;background:var(--g);color:white;text-decoration:none;padding:15px 22px;border-radius:13px;font-weight:700;margin:8px 10px 0 0}.btn.secondary{background:#fff;color:var(--g);border:1px solid var(--line)}section.content{padding:54px 0 80px}h2{font-size:clamp(29px,3vw,42px)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:25px;line-height:1.7}.card h3{margin-top:0}.card li{margin:9px 0}.muted{color:#6a796d}.page{display:none}.page.active{display:block}footer{background:#1e382a;color:white;padding:34px 0}footer a{color:#d9ead9}.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}.filters input{width:min(100%,500px);padding:14px;border:1px solid var(--line);border-radius:10px;font-size:16px}.notice{padding:15px;border-left:4px solid #f5c542;background:#fff8e2}.error{color:#9a382b}@media(max-width:850px){.head{align-items:flex-start;flex-direction:column}nav a{font-size:13px;padding:9px}.hero{padding:42px 0}.hero-grid{grid-template-columns:1fr}.hero img{max-width:290px;margin:auto}.grid{grid-template-columns:1fr}.brand strong{font-size:20px}}
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f0df">
+  <meta name="description" content="Ярмарка «4 сезона» во Владивостоке — местные продукты, фермеры и производители Приморского края.">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="preload" as="image" href="./assets/hero-farmers.webp" fetchpriority="high">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Ярмарка «4 сезона» — вкусно, свежо, по-приморски</title>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#home" aria-label="Ярмарка «4 сезона» — на главную">
+        <img src="./assets/logo-4-sezona.png" alt="" width="62" height="60">
+        <span class="brand-name">Ярмарка <b>4 сезона</b></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Открыть меню"><span></span><span></span></button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Главная навигация">
+        <a class="nav-link active" href="#home">Главная</a>
+        <a class="nav-link" href="#participation">Участие</a>
+        <a class="nav-link" href="#documents">Документы</a>
+        <a class="nav-link" href="#registry">Реестр участников</a>
+        <a class="nav-link" href="#reviews">Отзывы</a>
+        <a class="nav-link" href="#contacts">Контакты</a>
+        <a class="nav-cta" href="#participation">Стать участником</a>
+      </nav>
+    </div>
+  </header>
 
-/* 4 сезона — праздничная фермерская палитра */
-:root{--g:#27763e;--ink:#26352a;--line:#ecdcc6}
-body{background:#fff9ee}
-header{background:#fffef9;border-bottom:3px solid #f5ca62;box-shadow:0 4px 20px #54371912}
-.brand strong{color:#28763d}
-nav a:hover,nav a.on{background:#fff0c8;color:#aa441b}
-.hero{background:radial-gradient(circle at 90% 10%,#ffe7a2 0,transparent 40%),linear-gradient(120deg,#fff8df,#fff1ce 65%,#f5edc9);position:relative;overflow:hidden}
-.hero:before{content:'🍎 🥕 🌽 🍅';position:absolute;right:2%;top:4%;font-size:26px;opacity:.65;letter-spacing:13px}
-.hero-grid{grid-template-columns:1.2fr .8fr}
-.hero h1{font-family:Georgia,serif;letter-spacing:-.045em}
-.pill{background:#fbc348;color:#6b3210;box-shadow:0 5px 0 #e5a927}
-.btn{background:#28763d;box-shadow:0 5px 0 #195b2d;transition:transform .15s}
-.btn:hover{transform:translateY(-2px)}
-.btn.secondary{background:#fffdf5;box-shadow:0 5px 0 #e9d7bb}
-.card{border:2px solid #f0e2cc;box-shadow:0 10px 25px #6946220e;background:#fffefb}
-.card:nth-child(3n+1){border-top:6px solid #f18627}
-.card:nth-child(3n+2){border-top:6px solid #4d9b39}
-.card:nth-child(3n){border-top:6px solid #d74732}
-.content h2{font-family:Georgia,serif;color:#245b35}
-.fair-photo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:26px 0 38px}
-.fair-photo{margin:0;overflow:hidden;border-radius:22px;background:#f4e5c9;box-shadow:0 12px 24px #5b42171b}
-.fair-photo img{width:100%;height:240px;object-fit:cover;display:block}
-.fair-photo figcaption{padding:16px 18px;font-weight:800;color:#6b3b1b}
-.fair-intro{padding:40px 0;background:#fff4db}
-.fair-intro h2{margin:0 0 10px}
-.fair-strip{display:flex;gap:12px;flex-wrap:wrap;margin:25px 0}
-.fair-strip span{padding:13px 17px;background:#fff;border:1px solid #f0dcae;border-radius:30px;font-weight:700}
-footer{background:#225634}
-@media(max-width:850px){.fair-photo-grid{grid-template-columns:1fr}.fair-photo img{height:220px}.hero:before{display:none}}
-</style></head><body>
-<header><div class="wrap head"><a href="#home" class="brand"><img src="https://static.tildacdn.com/tila3264-3438-4431-a132-353335336232/logo_4_sezona_transp.png" alt=""><span><strong>Ярмарка «4 сезона»</strong><small>ВЛАДИВОСТОК · ЖИГУРА, 2Б</small></span></a><nav aria-label="Разделы"><a href="#home">Главная</a><a href="#participation">Участие</a><a href="#documents">Документы</a><a href="#registry">Участники</a><a href="#feedback">Отзывы и связь</a><a href="#contacts">Контакты</a></nav></div></header>
-<main><div id="home" class="page active"><div class="hero"><div class="wrap hero-grid"><div><span class="pill">ПРОДОВОЛЬСТВЕННАЯ ЯРМАРКА</span><h1>Свежие продукты.<br><em>Четыре сезона.</em><br>Одна ярмарка.</h1><p class="lead">Фермеры, местные производители и предприниматели Приморского края. Присоединяйтесь к ярмарке «4 сезона» во Владивостоке.</p><a class="btn" href="#participation">Стать участником</a><a class="btn secondary" href="#registry">Наши участники</a></div><img src="https://static.tildacdn.com/tila3264-3438-4431-a132-353335336232/logo_4_sezona_transp.png" alt="Логотип ярмарки «4 сезона»"></div></div><section class="fair-intro"><div class="wrap"><h2>Вкусно. Свежо. По-приморски!</h2><p class="lead">Овощи с грядки, домашние деликатесы и продукты от местных производителей — всё, за что мы любим настоящую ярмарку.</p><div class="fair-strip"><span>🥕 Овощи и зелень</span><span>🧀 Сыры и молочная продукция</span><span>🥩 Мясные деликатесы</span><span>🍞 Выпечка и сладости</span></div><div class="fair-photo-grid"><figure class="fair-photo"><img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=85" alt="Прилавок со свежими овощами и фруктами" loading="lazy"><figcaption>Свежие овощи и фрукты</figcaption></figure><figure class="fair-photo"><img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=900&q=85" alt="Мясная продукция" loading="lazy"><figcaption>Мясо и домашние деликатесы</figcaption></figure><figure class="fair-photo"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=85" alt="Портрет улыбающегося человека" loading="lazy"><figcaption>Люди, которые любят своё дело</figcaption></figure></div><p class="muted">Фотографии иллюстративные; они не изображают конкретных участников ярмарки.</p><a class="btn" href="#registry">Участники ярмарки</a><a class="btn secondary" href="#participation">Как принять участие</a></div></section><section class="content"><div class="wrap"><h2>Добро пожаловать на ярмарку</h2><p class="lead">Свежая продукция, местные производители и прямое общение с покупателями.</p></div></section></div>
-<section id="participation" class="page content"><div class="wrap"><h2>Как стать участником</h2><p class="lead">Выберите свою категорию. Ниже сохранён перечень из исходного сайта.</p><div class="grid"><article class="card"><h3>Юридические лица</h3><a class="btn" href="#legal">Документы и требования</a></article><article class="card"><h3>Индивидуальные предприниматели</h3><a class="btn" href="#ip">Документы и требования</a></article><article class="card"><h3>Граждане, ЛПХ и КФХ</h3><a class="btn" href="#citizens">Документы и требования</a></article></div></div></section>
-<section id="documents" class="page content"><div class="wrap"><h2>Документы для участия</h2><div class="grid"><article class="card"><h3>Юридическим лицам</h3><a href="#legal">Открыть перечень</a></article><article class="card"><h3>ИП</h3><a href="#ip">Открыть перечень</a></article><article class="card"><h3>Гражданам, ЛПХ, КФХ</h3><a href="#citizens">Открыть перечень</a></article></div></div></section>
-<section id="legal" class="page content"><div class="wrap"><h2>Документы для юридических лиц</h2><div class="card"><h3>Документы для скачивания</h3><p><a href="https://docs.google.com/document/d/1RjFX8GVu1pEdAlfgTPvdI7BEaWMWwnq1/edit" target="_blank" rel="noopener">Заявка на участие</a></p><p><a href="https://docs.google.com/document/d/1HkuNk3_bQgVOLp2NJG8EH6wvkI-yvG-v/edit" target="_blank" rel="noopener">Согласие на обработку ПД</a></p><p class="notice">Важно: документы подписать и заверить печатью.</p><h3>Копии к заявке</h3><ul><li>Копии учредительных документов (устав)</li><li>Копия свидетельства ИНН</li><li>Выписка из ЕГРЮЛ</li></ul></div></div></section>
-<section id="ip" class="page content"><div class="wrap"><h2>Документы для ИП</h2><div class="card"><h3>Документы для скачивания</h3><p><a href="https://docs.google.com/document/d/1RjFX8GVu1pEdAlfgTPvdI7BEaWMWwnq1/edit" target="_blank" rel="noopener">Заявка на участие</a></p><p><a href="https://docs.google.com/document/d/1HkuNk3_bQgVOLp2NJG8EH6wvkI-yvG-v/edit" target="_blank" rel="noopener">Согласие на обработку ПД</a></p><p class="notice">Важно: документы подписать собственноручно.</p><h3>Копии к заявке</h3><ul><li>Копия свидетельства ОГРНИП</li><li>Копия свидетельства ИНН</li><li>Копия паспорта</li></ul></div></div></section>
-<section id="citizens" class="page content"><div class="wrap"><h2>Документы для граждан (ЛПХ, КФХ)</h2><div class="card"><h3>Документы для скачивания</h3><p><a href="https://docs.google.com/document/d/1RjFX8GVu1pEdAlfgTPvdI7BEaWMWwnq1/edit" target="_blank" rel="noopener">Заявка на участие</a></p><p><a href="https://docs.google.com/document/d/1HkuNk3_bQgVOLp2NJG8EH6wvkI-yvG-v/edit" target="_blank" rel="noopener">Согласие на обработку ПД</a></p><p class="notice">Важно: документы подписать собственноручно.</p><h3>Копии к заявке</h3><ul><li>Копия паспорта</li><li>Копия ИНН (при наличии)</li><li>Справка о ЛПХ / КФХ</li><li>Справка о НПД (для самозанятых)</li></ul></div></div></section>
-<section id="registry" class="page content"><div class="wrap"><h2>Реестр участников</h2><p class="muted">Реестр переносится из исходного списка. До окончания переноса данные не подменяются вымышленными.</p><div class="notice">Полный список участников ещё не опубликован в этой версии.</div></div></section>
-<section id="feedback" class="page content"><div class="wrap"><h2>Отзывы и обратная связь</h2><p>Для обращения используйте электронную форму.</p><a class="btn" target="_blank" rel="noopener" href="https://forms.yandex.ru/u/6a756ae050569023190d3dab/">Открыть форму обращения</a></div></section>
-<section id="contacts" class="page content"><div class="wrap"><h2>Контакты</h2><div class="card"><p>Владивосток, ул. Жигура, 2Б</p><p><a href="tel:+74232606803">8 (423) 2-606-803</a></p><p><a href="tel:+74232606907">8 (423) 2-606-907</a></p><p><a href="mailto:crp_vl@list.ru">crp_vl@list.ru</a></p></div></div></section>
-</main><footer><div class="wrap">Ярмарка «4 сезона» · Владивосток · <a href="#documents">Документы</a></div></footer>
-<script>(function(){const pages=[...document.querySelectorAll('.page')],links=[...document.querySelectorAll('nav a')];function route(){const id=decodeURIComponent(location.hash.slice(1))||'home';const p=document.getElementById(id);const target=p&&p.classList.contains('page')?id:'home';pages.forEach(el=>el.classList.toggle('active',el.id===target));links.forEach(el=>el.classList.toggle('on',el.getAttribute('href')==='#'+target));window.scrollTo(0,0)}window.addEventListener('hashchange',route);route();if(window.parent!==window){const notify=()=>window.parent.postMessage({type:'yarmarka-height',height:Math.max(document.documentElement.scrollHeight,document.body.scrollHeight)},'https://4сезона.online');new ResizeObserver(notify).observe(document.body);window.addEventListener('load',notify);window.addEventListener('hashchange',()=>requestAnimationFrame(notify));notify()}})()</script></body></html>
+  <main id="main">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="hero-photo" aria-hidden="true"><img src="./assets/hero-farmers.webp" alt="" fetchpriority="high"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="hero-eyebrow">Фермерская ярмарка</p>
+          <h1 id="hero-title">4 сезона</h1>
+          <p class="hero-ribbon">Вкусно. Свежо. По-приморски!</p>
+          <p class="hero-description">Овощи с грядки, домашние деликатесы и продукты от местных производителей — всё, за что мы любим настоящую ярмарку.</p>
+          <div class="hero-actions">
+            <a class="button button-orange" href="#contacts">Посетить ярмарку</a>
+            <a class="button button-outline" href="#participation">Участвовать</a>
+          </div>
+          <p class="image-note">Фотография фермерской пары создана как иллюстрация и не изображает реальных участников.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="category-band" aria-label="Категории продукции">
+      <div class="category-list">
+        <a class="category-pill" href="#products"><span class="category-mark mark-green"></span>Овощи и зелень</a>
+        <a class="category-pill" href="#products"><span class="category-mark mark-yellow"></span>Сыры и молочная продукция</a>
+        <a class="category-pill" href="#products"><span class="category-mark mark-red"></span>Мясные деликатесы</a>
+        <a class="category-pill" href="#products"><span class="category-mark mark-orange"></span>Выпечка и сладости</a>
+        <a class="category-pill" href="#products"><span class="category-mark mark-honey"></span>Домашние заготовки</a>
+        <a class="category-pill" href="#products"><span class="category-mark mark-leaf"></span>Эко-продукты</a>
+      </div>
+    </section>
+
+    <section class="section products-section" id="products" aria-labelledby="products-title">
+      <div class="section-heading">
+        <p class="eyebrow">Дары Приморья</p>
+        <h2 id="products-title">С любовью к своему делу</h2>
+        <p class="section-lead">На ярмарке встречаются продукты, в которых чувствуется забота, мастерство и щедрость нашего края.</p>
+      </div>
+      <div class="product-grid">
+        <article class="product-card"><img src="./assets/vegetables.webp" alt="Свежие сезонные овощи и зелень в деревянных корзинах" loading="lazy"><div class="product-card-caption"><span class="card-kicker">С грядки</span><h3>Овощи и фрукты</h3></div></article>
+        <article class="product-card"><img src="./assets/cheese.webp" alt="Ассорти натуральных фермерских сыров с зеленью и виноградом" loading="lazy"><div class="product-card-caption"><span class="card-kicker">Молочная лавка</span><h3>Натуральные сыры</h3></div></article>
+        <article class="product-card"><img src="./assets/meat.webp" alt="Домашние мясные деликатесы и колбасы на доске" loading="lazy"><div class="product-card-caption"><span class="card-kicker">Домашние рецепты</span><h3>Мясные деликатесы</h3></div></article>
+        <article class="product-card"><img src="./assets/bakery.webp" alt="Румяная выпечка, хлеб и пироги на фермерском столе" loading="lazy"><div class="product-card-caption"><span class="card-kicker">Из печи</span><h3>Выпечка и сладости</h3></div></article>
+        <article class="product-card"><img src="./assets/preserves.webp" alt="Домашние варенья, мёд и заготовки в стеклянных банках" loading="lazy"><div class="product-card-caption"><span class="card-kicker">Вкус лета</span><h3>Заготовки и мёд</h3></div></article>
+      </div>
+      <p class="illustration-note">Изображения продукции созданы для оформления сайта и служат иллюстрациями; они не подтверждают наличие конкретных товаров у участников.</p>
+    </section>
+
+    <section class="visit-band">
+      <div class="visit-inner">
+        <div><p class="eyebrow">Встречаемся на ярмарке</p><h2>Свежие продукты. Живое общение.</h2><p>Приходите познакомиться с местными производителями и выбрать продукты для своего стола.</p></div>
+        <a class="button button-green" href="#contacts">Как нас найти</a>
+      </div>
+    </section>
+
+    <section class="section participation-section" id="participation" aria-labelledby="participation-title">
+      <div class="section-heading">
+        <p class="eyebrow">Присоединяйтесь</p>
+        <h2 id="participation-title">Как стать участником</h2>
+        <p class="section-lead">Выберите свою категорию и свяжитесь с организаторами, чтобы получить актуальный комплект форм и условий участия.</p>
+      </div>
+      <div class="document-grid">
+        <article class="info-card"><span class="info-number">01</span><h3>Юридические лица</h3><p>Организаторы подскажут актуальный список документов и порядок подачи заявки.</p><a class="text-link" href="mailto:crp_vl@list.ru">Запросить список документов <span aria-hidden="true">→</span></a></article>
+        <article class="info-card"><span class="info-number">02</span><h3>Индивидуальные предприниматели</h3><p>Получите перечень документов для индивидуального предпринимателя напрямую у организаторов.</p><a class="text-link" href="mailto:crp_vl@list.ru">Запросить список документов <span aria-hidden="true">→</span></a></article>
+        <article class="info-card"><span class="info-number">03</span><h3>Граждане, ЛПХ и КФХ</h3><p>Уточните условия и комплект документов для граждан, ЛПХ и КФХ у организаторов.</p><a class="text-link" href="mailto:crp_vl@list.ru">Запросить список документов <span aria-hidden="true">→</span></a></article>
+      </div>
+    </section>
+
+    <section class="documents-band" id="documents" aria-labelledby="documents-title">
+      <div class="section documents-inner">
+        <div class="section-heading align-left"><p class="eyebrow">Важная информация</p><h2 id="documents-title">Документы ярмарки</h2><p class="section-lead">Актуальные тексты и формы выдаёт организатор ярмарки. Запросите нужный документ по электронной почте или телефону.</p></div>
+        <div class="legal-links">
+          <a href="mailto:crp_vl@list.ru?subject=%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B%20%D1%8F%D1%80%D0%BC%D0%B0%D1%80%D0%BA%D0%B8"><span>01</span><b>Запросить публичную оферту</b><i aria-hidden="true">↗</i></a>
+          <a href="mailto:crp_vl@list.ru?subject=%D0%9F%D0%BE%D0%BB%D0%B8%D1%82%D0%B8%D0%BA%D0%B0%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B8%20%D0%9F%D0%94"><span>02</span><b>Запросить политику обработки персональных данных</b><i aria-hidden="true">↗</i></a>
+          <a href="mailto:crp_vl@list.ru?subject=%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B%20%D1%8E%D1%80%D0%B8%D0%B4%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D0%BB%D0%B8%D1%86"><span>03</span><b>Документы юридических лиц</b><i aria-hidden="true">↗</i></a>
+          <a href="mailto:crp_vl@list.ru?subject=%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B%20%D0%98%D0%9F"><span>04</span><b>Документы индивидуальных предпринимателей</b><i aria-hidden="true">↗</i></a>
+          <a href="mailto:crp_vl@list.ru?subject=%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B%20%D0%B3%D1%80%D0%B0%D0%B6%D0%B4%D0%B0%D0%BD%2C%20%D0%9B%D0%9F%D0%A5%20%D0%B8%20%D0%9A%D0%A4%D0%A5"><span>05</span><b>Документы граждан, ЛПХ и КФХ</b><i aria-hidden="true">↗</i></a>
+          <p class="registry-status">Оригинальные юридические страницы и ссылки на заявления не включены в это обновление. Документы, уже находящиеся в репозитории, оставлены без изменений.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section registry-section" id="registry" aria-labelledby="registry-title">
+      <div class="section-heading">
+        <p class="eyebrow">Наше сообщество</p>
+        <h2 id="registry-title">Реестр участников</h2>
+        <p class="section-lead">Публикуются только сведения, разрешённые к открытому размещению. Список можно искать по названию, продукции и населённому пункту.</p>
+      </div>
+      <div class="registry-panel">
+        <div class="registry-controls">
+          <label class="search-field"><span class="visually-hidden">Поиск по участникам</span><input id="registry-search" type="search" placeholder="Название, продукция или населённый пункт" autocomplete="off"></label>
+          <label><span class="visually-hidden">Категория</span><select id="registry-category"><option value="">Все категории</option></select></label>
+          <label><span class="visually-hidden">Населённый пункт</span><select id="registry-locality"><option value="">Все населённые пункты</option></select></label>
+        </div>
+        <p class="registry-status" id="registry-status" role="status" aria-live="polite">Загружаем открытый реестр…</p>
+        <div class="registry-grid" id="registry-grid"></div>
+      </div>
+    </section>
+
+    <section class="reviews-section" id="reviews" aria-labelledby="reviews-title">
+      <div class="reviews-inner">
+        <div><p class="eyebrow">Обратная связь</p><h2 id="reviews-title">Ваше мнение важно</h2><p>Поделитесь впечатлением о ярмарке или задайте вопрос организаторам через форму обратной связи.</p></div>
+        <a class="button button-orange" href="https://forms.yandex.ru/u/6a756ae050569023190d3dab/" target="_blank" rel="noopener noreferrer">Оставить отзыв</a>
+      </div>
+    </section>
+
+    <section class="section contacts-section" id="contacts" aria-labelledby="contacts-title">
+      <div class="contact-copy"><p class="eyebrow">До встречи</p><h2 id="contacts-title">Найдите свою ярмарку</h2><p class="section-lead">Ярмарка «4 сезона» — Владивосток, улица Жигура, 2Б.</p><div class="contact-links"><a href="tel:+74232606803">8 (423) 2-606-803</a><a href="tel:+74232606907">8 (423) 2-606-907</a><a href="mailto:crp_vl@list.ru">crp_vl@list.ru</a></div><a class="text-link" href="https://yandex.ru/maps/?text=%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%B2%D0%BE%D1%81%D1%82%D0%BE%D0%BA%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%96%D0%B8%D0%B3%D1%83%D1%80%D0%B0%2C%202%D0%91" target="_blank" rel="noopener noreferrer">Открыть адрес на карте <span aria-hidden="true">↗</span></a></div>
+      <div class="contact-card"><img src="./assets/logo-4-sezona.png" alt="" width="90" height="86"><p class="contact-card-title">Ярмарка<br>«4 сезона»</p><p>Владивосток<br>ул. Жигура, 2Б</p></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner"><a class="brand footer-brand" href="#home"><img src="./assets/logo-4-sezona.png" alt="" width="45" height="44"><span class="brand-name">Ярмарка <b>4 сезона</b></span></a><p>Свежие продукты. Четыре сезона. Одна ярмарка.</p><div class="footer-links"><a href="#documents">Запросить публичную оферту</a><a href="#documents">Запросить политику обработки персональных данных</a></div><small>Иллюстрации на сайте не изображают реальных участников ярмарки.</small></div>
+  </footer>
+</body>
+</html>
