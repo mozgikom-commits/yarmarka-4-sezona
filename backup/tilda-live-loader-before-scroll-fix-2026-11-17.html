@@ -1,0 +1,26 @@
+<!-- Backup of the existing Tilda T123 on page 289692609
+     Captured 2026-11-17 before the approved loader-only update.
+     Tilda duplicate page created as unpublished copy: page 393349609.
+     Keep this file for rollback; it is not a deployment entry point. -->
+<div id="yarmarka-host">
+  <div style="padding:24px;text-align:center">Загрузка ярмарки «4 сезона»…</div>
+</div>
+<script>
+(function(){
+  var host = document.getElementById("yarmarka-host");
+  var url = "https://mozgikom-commits.github.io/yarmarka-4-sezona/";
+  var frame = document.createElement("iframe");
+  frame.title = "Ярмарка «4 сезона»";
+  frame.src = url;
+  frame.loading = "eager";
+  frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+  frame.style.cssText = "display:block;width:100%;height:100vh;min-height:650px;border:0;background:#fff9ee";
+  host.replaceChildren(frame);
+  window.addEventListener("message", function(e) {
+    if (e.source !== frame.contentWindow || e.origin !== "https://mozgikom-commits.github.io") return;
+    if (e.data && e.data.type === "yarmarka-height" && Number.isFinite(e.data.height)) {
+      frame.style.height = Math.max(650, Math.ceil(e.data.height) + 4) + "px";
+    }
+  });
+})();
+</script>
