@@ -12,8 +12,8 @@
 ## GitHub и публикация
 
 - Репозиторий: [mozgikom-commits/yarmarka-4-sezona](https://github.com/mozgikom-commits/yarmarka-4-sezona), ветка `main`.
-- Последний проверенный коммит сайта: `2f8d9fc5f6886071ec8739edbba6815761a845ae`.
-- GitHub Actions Pages workflow для этого коммита завершился успешно (run #14).
+- Последний опубликованный коммит main: `6de4e96b2dcf35b8c1c77da0b97e2d4301f397b9` (обновлённые отчёты; функциональная правка Tilda-шаблона — `2f8d9fc5f6886071ec8739edbba6815761a845ae`).
+- GitHub Actions Pages для последнего коммита завершился успешно (run #16, 45 секунд). Run #14 также успешно опубликовал кодовую правку.
 - Опубликованная страница: [GitHub Pages](https://mozgikom-commits.github.io/yarmarka-4-sezona/).
 - Действующий сайт: [https://xn--4-8sboi4afs.online/](https://xn--4-8sboi4afs.online/). После публикации Tilda главная и iframe открываются по HTTPS; в iframe загружается текущая версия с GitHub Pages.
 - На странице Tilda подтверждена публикация на основной публичный адрес.
