@@ -79,13 +79,53 @@
   };
   loadRegistry();
 
-  // Height bridge for the reviewed Tilda T123 loader; the parent validates this page origin.
+  // Parent bridge used only when this page is embedded in the approved Tilda T123.
+  const embedded = window.parent !== window;
   const reportHeight = () => {
-    if (window.parent === window) return;
-    window.parent.postMessage({ type: 'yarmarka-height', height: Math.ceil(document.documentElement.scrollHeight) }, '*');
+    if (!embedded) return;
+    window.parent.postMessage(
+      { type: 'yarmarka-height', height: Math.ceil(document.documentElement.scrollHeight) },
+      '*'
+    );
   };
-  window.addEventListener('load', reportHeight);
-  window.addEventListener('hashchange', () => requestAnimationFrame(reportHeight));
+  const reportParentScroll = (id) => {
+    if (!embedded || !id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+    const top = Math.round(target.getBoundingClientRect().top + window.scrollY);
+    window.parent.postMessage({ type: 'yarmarka-scroll', top }, '*');
+  };
+  const scrollToCurrentHash = () => {
+    const raw = location.hash.slice(1);
+    if (!raw) return;
+    let id;
+    try { id = decodeURIComponent(raw); } catch (_) { return; }
+    requestAnimationFrame(() => {
+      reportHeight();
+      reportParentScroll(id);
+    });
+  };
+  document.addEventListener('click', (event) => {
+    if (!embedded || event.defaultPrevented || event.button !== 0
+      || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest('a[href^="#"]');
+    if (!link) return;
+    const raw = link.getAttribute('href').slice(1);
+    if (!raw) return;
+    let id;
+    try { id = decodeURIComponent(raw); } catch (_) { return; }
+    if (!document.getElementById(id)) return;
+    event.preventDefault();
+    history.pushState(null, '', `#${encodeURIComponent(id)}`);
+    updateActiveLink();
+    requestAnimationFrame(() => {
+      reportHeight();
+      reportParentScroll(id);
+    });
+  });
+  window.addEventListener('load', () => { reportHeight(); scrollToCurrentHash(); });
+  window.addEventListener('hashchange', () => { reportHeight(); scrollToCurrentHash(); });
+  window.addEventListener('popstate', () => { updateActiveLink(); scrollToCurrentHash(); });
   if ('ResizeObserver' in window) new ResizeObserver(reportHeight).observe(document.documentElement);
-  setTimeout(reportHeight, 200);
+  setTimeout(() => { reportHeight(); scrollToCurrentHash(); }, 200);
 })();
