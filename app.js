@@ -51,17 +51,19 @@
   const renderRegistry = (records) => {
     const query = normalize(search?.value);
     const selectedCategory = category?.value ?? '';
+    const isPreview = grid?.dataset.registryMode === 'preview';
     const filtered = records.filter((item) => {
       const matchesText = !query || normalize(`${item.name ?? ''} ${item.products ?? ''}`).includes(query);
       const matchesCategory = !selectedCategory || categoriesFor(item.products).includes(selectedCategory);
       return matchesText && matchesCategory;
     });
-    grid.replaceChildren();
-    count.textContent = `Опубликовано: ${records.length} из 102`;
-    status.textContent = filtered.length
-      ? `Найдено участников: ${filtered.length}`
-      : (records.length ? 'По запросу и выбранной категории записей нет.' : 'Пока нет записей, для которых подтверждено основание публичного размещения.');
-    filtered.forEach((item) => {
+    const shown = isPreview ? filtered.slice(0, 4) : filtered;
+    grid?.replaceChildren();
+    if (count) count.textContent = `Опубликовано: ${records.length} из 102`;
+    if (status) status.textContent = isPreview
+      ? `Первые ${shown.length} участника из ${records.length}. Полный список — в каталоге.`
+      : (filtered.length ? `Найдено участников: ${filtered.length}` : (records.length ? 'По запросу и выбранной категории записей нет.' : 'В реестре пока нет записей.'));
+    shown.forEach((item) => {
       const card = document.createElement('article');
       card.className = 'registry-card';
       const title = document.createElement('h3');
@@ -74,7 +76,7 @@
       value.textContent = item.products;
       details.append(label, value);
       card.append(title, details);
-      grid.append(card);
+      grid?.append(card);
     });
   };
 
