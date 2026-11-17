@@ -117,7 +117,7 @@ button, input, select { font: inherit; }
 .registry-card { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(145deg,#fffdf7,#f8f4e9); }
 .registry-card h3 { margin: 0 0 7px; color: var(--brown); font: 700 19px var(--serif); }
 .registry-card p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; }
-.registry-card .registry-inn { color: var(--green-dark); font-size: 16px; font-weight: 800; }
+.registry-card .registry-products { color: #52554b; font-size: 15px; line-height: 1.55; }
 
 .schedule-section { padding: 48px 20px 56px; background: linear-gradient(135deg,#f7f0df 0%,#fffaf0 48%,#edf1df 100%); }
 .schedule-inner { width: min(100%,1160px); margin-inline: auto; display: grid; gap: 24px; }
@@ -183,6 +183,8 @@ button, input, select { font: inherit; }
   .category-pill { justify-content: center; padding-inline: 12px; }
   .product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
   .product-card img { aspect-ratio: 1.5 / 1; }
+  .registry-controls { grid-template-columns: minmax(0,1fr) auto; align-items: center; }
+  .registry-controls .search-field { grid-column: 1 / -1; }
   .registry-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .contacts-section { grid-template-columns: 1.4fr .6fr; }
   .contact-links { flex-direction: row; flex-wrap: wrap; gap: 8px 18px; }
@@ -239,7 +241,8 @@ button, input, select { font: inherit; }
   .legal-links a { grid-template-columns: 42px 1fr 24px; gap: 10px; min-height: 64px; padding: 14px 3px; }
   .legal-links b { font-size: 17px; }
   .registry-panel { padding: 24px; border-radius: 22px; }
-  .registry-controls { grid-template-columns: minmax(0,1fr) auto; align-items: center; }
+  .registry-controls { grid-template-columns: minmax(0,1fr) minmax(180px,.7fr) auto; align-items: center; }
+  .registry-controls .search-field { grid-column: auto; }
   .registry-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .visit-inner, .reviews-inner { flex-direction: row; align-items: center; justify-content: space-between; gap: 25px; padding-block: 48px; }
   .contacts-section { gap: 42px; }
