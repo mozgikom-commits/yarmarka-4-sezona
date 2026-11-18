@@ -1,28 +1,49 @@
-<!-- Tilda T123: height and scroll messages are accepted only from this iframe and its GitHub Pages origin. -->
+<!-- Tilda T123: allow messages only from the known iframe and GitHub Pages origin. -->
 <div id="yarmarka-host"><div style="padding:24px;text-align:center">Загрузка ярмарки «4 сезона»…</div></div>
 <script>
-(function(){
-  var host=document.getElementById("yarmarka-host");
-  var url="https://mozgikom-commits.github.io/yarmarka-4-sezona/";
-  var frame=document.createElement("iframe");
-  frame.title="Ярмарка «4 сезона»";
-  frame.src=url;
-  frame.loading="eager";
-  frame.setAttribute("referrerpolicy","strict-origin-when-cross-origin");
-  frame.style.cssText="display:block;width:100%;height:100vh;min-height:650px;border:0;background:#fff9ee";
+(function () {
+  'use strict';
+  var host = document.getElementById('yarmarka-host');
+  var siteUrl = 'https://mozgikom-commits.github.io/yarmarka-4-sezona/';
+  var trustedOrigin = new URL(siteUrl).origin;
+  if (!host) return;
+
+  var frame = document.createElement('iframe');
+  frame.title = 'Ярмарка «4 сезона»';
+  frame.src = siteUrl;
+  frame.loading = 'eager';
+  frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+  frame.style.cssText = 'display:block;width:100%;height:100vh;min-height:650px;border:0;background:#fff9ee';
   host.replaceChildren(frame);
-  window.addEventListener("message",function(e){
-    if(e.source!==frame.contentWindow || e.origin!=="https://mozgikom-commits.github.io")return;
-    var data=e.data;
-    if(!data || typeof data.type!=="string")return;
-    if(data.type==="yarmarka-height" && Number.isFinite(data.height)){
-      frame.style.height=Math.max(650,Math.ceil(data.height)+4)+"px";
+
+  function resetToPageTop(resetHeight) {
+    if (resetHeight) frame.style.height = Math.max(650, window.innerHeight) + 'px';
+    var frameTop = frame.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: Math.max(0, Math.round(frameTop)), behavior: 'auto' });
+  }
+
+  window.addEventListener('message', function (event) {
+    if (event.source !== frame.contentWindow || event.origin !== trustedOrigin) return;
+    var data = event.data;
+    if (!data || typeof data.type !== 'string') return;
+
+    if (data.type === 'yarmarka-height' && Number.isFinite(data.height)) {
+      frame.style.height = Math.max(650, Math.ceil(data.height) + 4) + 'px';
       return;
     }
-    if(data.type==="yarmarka-scroll" && Number.isFinite(data.top)){
-      var frameTop=frame.getBoundingClientRect().top+window.scrollY;
-      var target=Math.max(0,Math.round(frameTop+data.top));
-      window.scrollTo({top:target,behavior:"smooth"});
+    if (data.type === 'yarmarka-scroll' && Number.isFinite(data.top)) {
+      var frameTop = frame.getBoundingClientRect().top + window.scrollY;
+      var target = Math.max(0, Math.round(frameTop + data.top));
+      window.scrollTo({ top: target, behavior: 'smooth' });
+      return;
+    }
+    if (data.type === 'yarmarka-page-navigation') {
+      resetToPageTop(true);
+      return;
+    }
+    if (data.type === 'yarmarka-page-ready'
+      && data.navigationType !== 'back_forward') {
+      resetToPageTop(true);
     }
   });
 })();
