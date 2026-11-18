@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f0df">
+  <meta name="description" content="Ярмарка «4 сезона» во Владивостоке — местные продукты, фермеры и производители Приморского края.">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="preload" as="image" href="./assets/hero-farmers.webp" imagesrcset="./assets/hero-farmers-720.webp 720w, ./assets/hero-farmers.webp 1320w" imagesizes="(max-width: 899px) 100vw, 60vw" fetchpriority="high">
+  <link rel="stylesheet" href="./styles.css?v=20261117-8">
+  <title>Ярмарка «4 сезона» — вкусно, свежо, по-приморски</title>
+  <script src="./app.js?v=20261117-8" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#home" aria-label="Ярмарка «4 сезона» — на главную">
+        <img src="./assets/logo-4-sezona.png" alt="" width="62" height="60">
+        <span class="brand-name">Ярмарка <b>4 сезона</b></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Открыть меню"><span></span><span></span></button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Главная навигация">
+        <a class="nav-link active" href="#home">Главная</a>
+        <a class="nav-link" href="#participation">Участие</a>
+        <a class="nav-link" href="#documents">Документы</a>
+        <a class="nav-link" href="#registry">Реестр участников</a>
+        <a class="nav-link" href="#reviews">Отзывы</a>
+        <a class="nav-link" href="#contacts">Контакты</a>
+        <a class="nav-cta" href="#participation">Стать участником</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="hero-photo" aria-hidden="true"><img src="./assets/hero-farmers.webp" srcset="./assets/hero-farmers-720.webp 720w, ./assets/hero-farmers.webp 1320w" sizes="(max-width: 899px) 100vw, 60vw" width="1320" height="880" alt="" fetchpriority="high" decoding="async"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="hero-eyebrow">Фермерская ярмарка</p>
+          <h1 id="hero-title">4 сезона</h1>
+          <p class="hero-ribbon">Вкусно. Свежо. По-приморски!</p>
+          <p class="hero-description">Овощи с грядки, домашние деликатесы и продукты от местных производителей — всё, за что мы любим настоящую ярмарку.</p>
+          <div class="hero-actions">
+            <a class="button button-orange" href="#contacts">Посетить ярмарку</a>
+            <a class="button button-outline" href="#participation">Участвовать</a>
+          </div>
+          <p class="image-note">Фотография фермерской пары создана как иллюстрация и не изображает реальных участников.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="schedule-section" id="schedule" aria-labelledby="schedule-title">
+      <div class="schedule-inner">
+        <div class="schedule-heading">
+          <p class="eyebrow">Для гостей и участников</p>
+          <h2 id="schedule-title">Режим работы ярмарки «4 сезона»</h2>
+          <p>Торговые места должны быть готовы к открытию, а территория освобождена после завершения работы.</p>
+        </div>
+        <div class="schedule-content">
+          <article class="schedule-buyers"><span>Для покупателей</span><strong>08:00–19:00</strong></article>
+          <div class="schedule-timeline" aria-label="Расписание участников">
+            <div><time>07:00–08:00</time><span><b>Заезд и подготовка</b><small>Подготовка торговых мест к открытию</small></span></div>
+            <div><time>08:00–19:00</time><span><b>Торговля</b><small>Торговые места готовы к 08:00</small></span></div>
+            <div><time>19:00–20:00</time><span><b>Уборка и выезд</b><small>Погрузка оборудования; территорию освободить не позднее 20:00</small></span></div>
+          </div>
+          <p class="schedule-note">Движение автомобилей участников допускается с 07:00 до 08:00 и с 19:00 до 20:00, кроме случаев, согласованных с администрацией ярмарки.</p>
+          <p class="schedule-note"><a href="https://drive.google.com/file/d/1GP6JWqW8EMnN4tGAqr0ppC59EfCoHV7O/view" target="_blank" rel="noopener noreferrer">Приказ № 54-од о режиме работы ярмарки — открыть PDF ↗</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="category-band" aria-label="Категории продукции">
+      <div class="category-list">
+        <a class="category-pill" href="#products"><span class="category-mark mark-green"></span>Овощи и зелень</a>
+        <a class="category-pill" href="#products"><span class="category-mark mark-yellow"></span>Сыры и молочная продукция</a>
+        <a class="category-pill" href="#products"><span class="category-mark mark-red"></span>Мясные деликатесы</a>
+        <a class="category-pill" href="#products"><span class="category-mark mark-orange"></span>Выпечка и сладости</a>
+        <a class="category-pill" href="#products"><span class="category-mark mark-honey"></span>Домашние заготовки</a>
+        <a class="category-pill" href="#products"><span class="category-mark mark-leaf"></span>Эко-продукты</a>
+      </div>
+    </section>
+
+    <section class="section products-section" id="products" aria-labelledby="products-title">
+      <div class="section-heading">
+        <p class="eyebrow">Дары Приморья</p>
+        <h2 id="products-title">С любовью к своему делу</h2>
+        <p class="section-lead">На ярмарке встречаются продукты, в которых чувствуется забота, мастерство и щедрость нашего края.</p>
+      </div>
+      <div class="product-grid">
+        <article class="product-card"><img src="./assets/vegetables.webp" srcset="./assets/vegetables-500.webp 500w, ./assets/vegetables.webp 1000w" sizes="(max-width: 600px) 50vw, (max-width: 899px) 50vw, 32vw" width="1000" height="667" alt="Свежие сезонные овощи и зелень в деревянных корзинах" loading="lazy" decoding="async"><div class="product-card-caption"><span class="card-kicker">С грядки</span><h3>Овощи и фрукты</h3></div></article>
+        <article class="product-card"><img src="./assets/cheese.webp" srcset="./assets/cheese-500.webp 500w, ./assets/cheese.webp 1000w" sizes="(max-width: 600px) 50vw, (max-width: 899px) 50vw, 32vw" width="1000" height="667" alt="Ассорти натуральных фермерских сыров с зеленью и виноградом" loading="lazy" decoding="async"><div class="product-card-caption"><span class="card-kicker">Молочная лавка</span><h3>Натуральные сыры</h3></div></article>
+        <article class="product-card"><img src="./assets/meat.webp" srcset="./assets/meat-500.webp 500w, ./assets/meat.webp 1000w" sizes="(max-width: 600px) 50vw, (max-width: 899px) 50vw, 32vw" width="1000" height="667" alt="Домашние мясные деликатесы и колбасы на доске" loading="lazy" decoding="async"><div class="product-card-caption"><span class="card-kicker">Домашние рецепты</span><h3>Мясные деликатесы</h3></div></article>
+        <article class="product-card"><img src="./assets/bakery.webp" srcset="./assets/bakery-500.webp 500w, ./assets/bakery.webp 1000w" sizes="(max-width: 600px) 50vw, (max-width: 899px) 50vw, 32vw" width="1000" height="667" alt="Румяная выпечка, хлеб и пироги на фермерском столе" loading="lazy" decoding="async"><div class="product-card-caption"><span class="card-kicker">Из печи</span><h3>Выпечка и сладости</h3></div></article>
+        <article class="product-card"><img src="./assets/preserves.webp" srcset="./assets/preserves-500.webp 500w, ./assets/preserves.webp 1000w" sizes="(max-width: 600px) 50vw, (max-width: 899px) 50vw, 32vw" width="1000" height="667" alt="Домашние варенья, мёд и заготовки в стеклянных банках" loading="lazy" decoding="async"><div class="product-card-caption"><span class="card-kicker">Вкус лета</span><h3>Заготовки и мёд</h3></div></article>
+      </div>
+      <p class="illustration-note">Изображения продукции созданы для оформления сайта и служат иллюстрациями; они не подтверждают наличие конкретных товаров у участников.</p>
+    </section>
+
+    <section class="visit-band">
+      <div class="visit-inner">
+        <div><p class="eyebrow">Встречаемся на ярмарке</p><h2>Свежие продукты. Живое общение.</h2><p>Приходите познакомиться с местными производителями и выбрать продукты для своего стола.</p></div>
+        <a class="button button-green" href="#contacts">Как нас найти</a>
+      </div>
+    </section>
+
+    <section class="section participation-section" id="participation" aria-labelledby="participation-title">
+      <div class="section-heading">
+        <p class="eyebrow">Присоединяйтесь</p>
+        <h2 id="participation-title">Как стать участником</h2>
+        <p class="section-lead">Выберите свою категорию и свяжитесь с организаторами, чтобы получить актуальный комплект форм и условий участия.</p>
+      </div>
+      <div class="document-grid">
+        <article class="info-card"><span class="info-number">01</span><h3>Юридические лица</h3><p>Организаторы подскажут актуальный список документов и порядок подачи заявки.</p><a class="text-link" href="./docs/docs-legal.html">Открыть перечень документов <span aria-hidden="true">→</span></a></article>
+        <article class="info-card"><span class="info-number">02</span><h3>Индивидуальные предприниматели</h3><p>Получите перечень документов для индивидуального предпринимателя напрямую у организаторов.</p><a class="text-link" href="./docs/docs-ip.html">Открыть перечень документов <span aria-hidden="true">→</span></a></article>
+        <article class="info-card"><span class="info-number">03</span><h3>Граждане, ЛПХ и КФХ</h3><p>Уточните условия и комплект документов для граждан, ЛПХ и КФХ у организаторов.</p><a class="text-link" href="./docs/docs-citizens.html">Открыть перечень документов <span aria-hidden="true">→</span></a></article>
+      </div>
+    </section>
+
+    <section class="documents-band" id="documents" aria-labelledby="documents-title">
+      <div class="section documents-inner">
+        <div class="section-heading align-left"><p class="eyebrow">Важная информация</p><h2 id="documents-title">Документы ярмарки</h2><p class="section-lead">Откройте оригинальные перечни и формы участия. Публичная оферта доступна в PDF-источнике организатора.</p></div>
+        <div class="legal-links">
+          <a href="./docs/public-offer.html"><span>01</span><b>Публичная оферта — читать</b><i aria-hidden="true">↗</i></a>
+          <div class="legal-doc-actions"><a class="button" href="https://disk.360.yandex.ru/d/u91i7QVHA8Xlaw?download=1" target="_blank" rel="noopener noreferrer">Скачать оригинальный PDF</a></div>
+          <a href="./docs/privacy-policy.html"><span>02</span><b>Политика обработки персональных данных — читать</b><i aria-hidden="true">↗</i></a>
+          <div class="legal-doc-actions"><a href="./docs/privacy-policy.html#print">Сохранить страницу в PDF</a></div>
+          <a href="./docs/docs-legal.html"><span>03</span><b>Документы юридических лиц</b><i aria-hidden="true">↗</i></a>
+          <a href="./docs/docs-ip.html"><span>04</span><b>Документы индивидуальных предпринимателей</b><i aria-hidden="true">↗</i></a>
+          <a href="./docs/docs-citizens.html"><span>05</span><b>Документы граждан, ЛПХ и КФХ</b><i aria-hidden="true">↗</i></a>
+          <a href="https://drive.google.com/file/d/1GP6JWqW8EMnN4tGAqr0ppC59EfCoHV7O/view" target="_blank" rel="noopener noreferrer"><span>06</span><b>Приказ № 54-од о режиме работы ярмарки — PDF</b><i aria-hidden="true">↗</i></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section registry-section" id="registry" aria-labelledby="registry-title">
+      <div class="section-heading">
+        <p class="eyebrow">Наше сообщество</p>
+        <h2 id="registry-title">Реестр участников</h2>
+        <p class="section-lead">В реестре — участники, прошедшие верификацию и подписавшие согласие на публикацию. На главной — четыре участника; полный каталог доступен отдельно.</p>
+      </div>
+      <div class="registry-panel">
+        <p class="registry-count" id="registry-count" aria-live="polite">Загружаем реестр…</p>
+        <p class="registry-status" id="registry-status" role="status" aria-live="polite">Загружаем открытый реестр…</p>
+        <div class="registry-grid" id="registry-grid" data-registry-mode="preview"></div>
+        <div class="registry-more"><a class="button button-green" href="./participants.html">Смотреть всех участников</a></div>
+      </div>
+    </section>
+
+    <section class="reviews-section" id="reviews" aria-labelledby="reviews-title">
+      <div class="reviews-inner">
+        <div><p class="eyebrow">Обратная связь</p><h2 id="reviews-title">Ваше мнение важно</h2><p>Поделитесь впечатлением о ярмарке или задайте вопрос организаторам через форму обратной связи.</p></div>
+        <a class="button button-orange" href="https://forms.yandex.ru/u/6a756ae050569023190d3dab/" target="_blank" rel="noopener noreferrer">Оставить отзыв</a>
+      </div>
+    </section>
+
+    <section class="section contacts-section" id="contacts" aria-labelledby="contacts-title">
+      <div class="contact-copy"><p class="eyebrow">До встречи</p><h2 id="contacts-title">Найдите свою ярмарку</h2><p class="section-lead">Ярмарка «4 сезона» — Владивосток, улица Жигура, 2Б.</p><div class="contact-links"><a href="tel:+74232606803">8 (423) 2-606-803</a><a href="tel:+74232606907">8 (423) 2-606-907</a><a href="mailto:crp_vl@list.ru">crp_vl@list.ru</a></div><a class="text-link" href="https://yandex.ru/maps/?text=%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%B2%D0%BE%D1%81%D1%82%D0%BE%D0%BA%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%96%D0%B8%D0%B3%D1%83%D1%80%D0%B0%2C%202%D0%91" target="_blank" rel="noopener noreferrer">Открыть адрес на карте <span aria-hidden="true">↗</span></a></div>
+      <div class="contact-card"><img src="./assets/logo-4-sezona.png" alt="" width="90" height="86"><p class="contact-card-title">Ярмарка<br>«4 сезона»</p><p>Владивосток<br>ул. Жигура, 2Б</p></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner"><a class="brand footer-brand" href="#home"><img src="./assets/logo-4-sezona.png" alt="" width="45" height="44"><span class="brand-name">Ярмарка <b>4 сезона</b></span></a><p>Свежие продукты. Четыре сезона. Одна ярмарка.</p><div class="footer-links"><a href="./docs/public-offer.html">Публичная оферта</a><a href="./docs/privacy-policy.html">Политика обработки персональных данных</a><a href="./participants.html">Все участники</a></div><small>Иллюстрации на сайте не изображают реальных участников ярмарки.</small></div>
+  </footer>
+</body>
+</html>
