@@ -16,6 +16,8 @@
   frame.style.cssText = 'display:block;width:100%;height:100vh;min-height:650px;border:0;background:#fff9ee';
   host.replaceChildren(frame);
 
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
   var pagePositions = Object.create(null);
   var currentPage = '';
   var pendingRestore = null;
