@@ -5,7 +5,7 @@
   const navigationType = navigation?.type || 'navigate';
   const postToParent = (type, payload = {}) => {
     if (!embedded) return;
-    window.parent.postMessage({ type, ...payload }, trustedParent);
+    window.parent.postMessage({ type, page: location.href, ...payload }, trustedParent);
   };
 
   const pageHeight = () => Math.ceil(Math.max(
@@ -56,7 +56,7 @@
       return;
     }
     if (destination.pathname !== location.pathname || destination.search !== location.search) {
-      postToParent('yarmarka-page-navigation');
+      postToParent('yarmarka-page-navigation', { from: location.href, to: destination.href });
     }
   });
 
@@ -67,7 +67,7 @@
   window.addEventListener('load', () => {
     reportHeight();
     postToParent('yarmarka-page-ready', { navigationType });
-    if (navigationType === 'navigate' && location.hash) syncHash();
+    if (location.hash) syncHash();
   });
   if ('ResizeObserver' in window) new ResizeObserver(reportHeight).observe(document.documentElement);
   document.fonts?.ready?.then(reportHeight).catch(() => {});

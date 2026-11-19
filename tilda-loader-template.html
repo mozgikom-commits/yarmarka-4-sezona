@@ -1,4 +1,4 @@
-<!-- Tilda T123: allow messages only from the known iframe and GitHub Pages origin. -->
+<!-- Tilda T123: verified bridge with per-page iframe scroll restoration. -->
 <div id="yarmarka-host"><div style="padding:24px;text-align:center">Загрузка ярмарки «4 сезона»…</div></div>
 <script>
 (function () {
@@ -16,10 +16,31 @@
   frame.style.cssText = 'display:block;width:100%;height:100vh;min-height:650px;border:0;background:#fff9ee';
   host.replaceChildren(frame);
 
+  var pagePositions = Object.create(null);
+  var currentPage = '';
+  var pendingRestore = null;
+
+  function frameTop() {
+    return frame.getBoundingClientRect().top + window.scrollY;
+  }
   function resetToPageTop(resetHeight) {
+    pendingRestore = null;
     if (resetHeight) frame.style.height = Math.max(650, window.innerHeight) + 'px';
-    var frameTop = frame.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: Math.max(0, Math.round(frameTop)), behavior: 'auto' });
+    window.scrollTo({ top: Math.max(0, Math.round(frameTop())), behavior: 'auto' });
+  }
+  function restorePagePosition(position) {
+    pendingRestore = Math.max(0, Math.round(position));
+    requestAnimationFrame(function () {
+      if (pendingRestore === null) return;
+      var maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      if (pendingRestore <= maxScroll + 1) {
+        window.scrollTo({ top: pendingRestore, behavior: 'auto' });
+        pendingRestore = null;
+      }
+    });
+  }
+  function applyPendingRestore() {
+    if (pendingRestore !== null) restorePagePosition(pendingRestore);
   }
 
   window.addEventListener('message', function (event) {
@@ -27,23 +48,35 @@
     var data = event.data;
     if (!data || typeof data.type !== 'string') return;
 
+    if (data.type === 'yarmarka-page-navigation') {
+      if (data.from) pagePositions[data.from] = window.scrollY;
+      if (data.to && !Object.prototype.hasOwnProperty.call(pagePositions, data.to)) pagePositions[data.to] = 0;
+      currentPage = data.to || '';
+      resetToPageTop(true);
+      return;
+    }
+    if (data.type === 'yarmarka-page-ready') {
+      currentPage = data.page || currentPage;
+      if (data.navigationType === 'back_forward' && currentPage
+        && Object.prototype.hasOwnProperty.call(pagePositions, currentPage)) {
+        pendingRestore = pagePositions[currentPage];
+        applyPendingRestore();
+      } else {
+        if (currentPage) pagePositions[currentPage] = 0;
+        resetToPageTop(true);
+      }
+      return;
+    }
+    if (data.page && currentPage && data.page !== currentPage) return;
     if (data.type === 'yarmarka-height' && Number.isFinite(data.height)) {
       frame.style.height = Math.max(650, Math.ceil(data.height) + 4) + 'px';
+      applyPendingRestore();
       return;
     }
     if (data.type === 'yarmarka-scroll' && Number.isFinite(data.top)) {
-      var frameTop = frame.getBoundingClientRect().top + window.scrollY;
-      var target = Math.max(0, Math.round(frameTop + data.top));
+      var target = Math.max(0, Math.round(frameTop() + data.top));
+      if (data.page) pagePositions[data.page] = target;
       window.scrollTo({ top: target, behavior: 'smooth' });
-      return;
-    }
-    if (data.type === 'yarmarka-page-navigation') {
-      resetToPageTop(true);
-      return;
-    }
-    if (data.type === 'yarmarka-page-ready'
-      && data.navigationType !== 'back_forward') {
-      resetToPageTop(true);
     }
   });
 })();
