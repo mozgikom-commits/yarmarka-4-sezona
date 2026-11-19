@@ -4,7 +4,7 @@
 (function () {
   'use strict';
   var host = document.getElementById('yarmarka-host');
-  var siteUrl = 'https://mozgikom-commits.github.io/yarmarka-4-sezona/';
+  var siteUrl = 'https://mozgikom-commits.github.io/yarmarka-4-sezona/?v=20261119-2';
   var trustedOrigin = new URL(siteUrl).origin;
   if (!host) return;
 
@@ -30,6 +30,15 @@
     if (resetHeight) frame.style.height = Math.max(650, window.innerHeight) + 'px';
     window.scrollTo({ top: Math.max(0, Math.round(frameTop())), behavior: 'auto' });
   }
+  var outerNavigation = window.performance?.getEntriesByType('navigation')[0];
+  if (outerNavigation?.type === 'reload') {
+    window.addEventListener('pageshow', function () {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { resetToPageTop(false); });
+      });
+    }, { once: true });
+  }
+
   function restorePagePosition(position) {
     pendingRestore = Math.max(0, Math.round(position));
     requestAnimationFrame(function () {
