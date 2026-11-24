@@ -1,8 +1,8 @@
 # Документы для юридических лиц
 
 ## Документы для скачивания
-- [Заявка на участие](https://docs.google.com/document/d/1RjFX8GVu1pEdAlfgTPvdI7BEaWMWwnq1/edit)
-- [Согласие на обработку персональных данных](https://docs.google.com/document/d/1HkuNk3_bQgVOLp2NJG8EH6wvkI-yvG-v/edit)
+- [Заявка на участие](./downloads/application.docx)
+- [Согласие на обработку персональных данных](./downloads/personal-data-consent.docx)
 
 **Важно:** документы подписать и заверить печатью.
 
