@@ -84,7 +84,7 @@
     });
     const shown = isPreview ? filtered.slice(0, 4) : filtered;
     grid?.replaceChildren();
-    if (count) count.textContent = `Опубликовано: ${records.length} из 102`;
+    if (count) count.textContent = `Опубликовано участников: ${records.length}`;
     if (status) status.textContent = isPreview
       ? `Первые ${shown.length} участника из ${records.length}. Полный список — в каталоге.`
       : (filtered.length ? `Найдено участников: ${filtered.length}` : (records.length ? 'По запросу и выбранной категории записей нет.' : 'В реестре пока нет записей.'));
@@ -107,10 +107,15 @@
 
   const loadRegistry = async () => {
     try {
-      const response = await fetch('./data/participants-public.json', { cache: 'no-store' });
-      if (!response.ok) throw new Error('registry_unavailable');
-      const payload = await response.json();
-      const records = Array.isArray(payload) ? payload : payload.participants;
+      let records;
+      if (window.fairData && window.fairData.backendType !== "static") {
+        records = await window.fairData.getPublicRegistry();
+      } else {
+        const response = await fetch('./data/participants-public.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error('registry_unavailable');
+        const payload = await response.json();
+        records = Array.isArray(payload) ? payload : payload.participants;
+      }
       if (!Array.isArray(records)) throw new Error('registry_invalid');
       renderRegistry(records);
       [search, category].forEach((field) => field?.addEventListener(field === search ? 'input' : 'change', () => renderRegistry(records)));

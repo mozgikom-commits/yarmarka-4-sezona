@@ -1,0 +1,6 @@
+# Локальный тестовый сервер
+tools/local-server/state.json
+tools/local-server/uploads/
+node_modules/
+*.log
+.DS_Store

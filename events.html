@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f0df">
+  <meta name="description" content="Мероприятия ярмарки «4 сезона» во Владивостоке: афиша, дегустации, встречи с фермерами, мастер-классы и праздничные программы.">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="stylesheet" href="./styles.css?v=20261125-1">
+  <link rel="stylesheet" href="./events.css?v=20261125-1">
+  <title>Мероприятия — Ярмарка «4 сезона»</title>
+  <script src="./js/fair-config.js" defer></script>
+  <script src="./js/fair-data.js" defer></script>
+  <script src="./navigation.js?v=20261119-4" defer></script>
+  <script src="./events.js?v=20261125-1" defer></script>
+</head>
+<body class="events-page">
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./index.html#home" aria-label="Ярмарка «4 сезона» — на главную">
+        <img src="./assets/logo-4-sezona.png" alt="" width="62" height="60">
+        <span class="brand-name">Ярмарка <b>4 сезона</b></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Открыть меню"><span></span><span></span></button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Главная навигация">
+        <a class="nav-link" href="./index.html#home">Главная</a>
+        <a class="nav-link" href="./index.html#participation">Участие</a>
+        <a class="nav-link" href="./index.html#documents">Документы</a>
+        <a class="nav-link" href="./participants.html">Реестр участников</a>
+        <a class="nav-link active" href="./events.html">Мероприятия</a>
+        <a class="nav-link" href="./index.html#contacts">Контакты</a>
+        <a class="nav-cta" href="./index.html#participation">Стать участником</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="events-hero" aria-labelledby="events-title">
+      <div class="events-hero-inner">
+        <p class="eyebrow">Жизнь ярмарки · Владивосток</p>
+        <h1 id="events-title">Мероприятия ярмарки</h1>
+        <p class="section-lead">Дегустации, встречи с фермерами, мастер-классы и праздничные программы на ярмарке «4 сезона».</p>
+      </div>
+    </section>
+
+    <section class="section events-section" aria-label="Афиша мероприятий">
+      <div class="events-toolbar">
+        <div class="events-filters" role="group" aria-label="Фильтр мероприятий">
+          <button class="events-filter is-active" type="button" data-filter="all">Все</button>
+          <button class="events-filter" type="button" data-filter="upcoming">Предстоящие</button>
+          <button class="events-filter" type="button" data-filter="past">Архив</button>
+        </div>
+        <p class="events-status" id="events-status" role="status" aria-live="polite">Загружаем афишу…</p>
+      </div>
+
+      <div class="events-layout">
+        <div class="events-calendar-panel" aria-label="Календарь мероприятий">
+          <div class="calendar-head">
+            <button class="calendar-nav" type="button" id="cal-prev" aria-label="Предыдущий месяц">‹</button>
+            <h2 class="calendar-month" id="cal-month" aria-live="polite"></h2>
+            <button class="calendar-nav" type="button" id="cal-next" aria-label="Следующий месяц">›</button>
+          </div>
+          <div class="calendar-weekdays" aria-hidden="true">
+            <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+          </div>
+          <div class="calendar-grid" id="calendar-grid"></div>
+          <p class="calendar-legend"><span class="legend-dot"></span> — в этот день есть мероприятие</p>
+        </div>
+
+        <div class="events-list-wrap">
+          <div class="events-list" id="events-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section events-gallery-section" id="gallery" aria-labelledby="gallery-title" hidden>
+      <div class="section-heading">
+        <p class="eyebrow">Как это было</p>
+        <h2 id="gallery-title">Фотогалерея прошедших мероприятий</h2>
+        <p class="section-lead">Фотографии с прошедших событий ярмарки.</p>
+      </div>
+      <div class="gallery-grid" id="gallery-grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner"><a class="brand footer-brand" href="./index.html#home"><img src="./assets/logo-4-sezona.png" alt="" width="45" height="44"><span class="brand-name">Ярмарка <b>4 сезона</b></span></a><p>Свежие продукты. Четыре сезона. Одна ярмарка.</p><div class="footer-links"><a href="./docs/public-offer.html">Публичная оферта</a><a href="./docs/privacy-policy.html">Политика обработки персональных данных</a><a href="./participants.html">Все участники</a></div><small>Иллюстрации на сайте не изображают реальных участников ярмарки.</small></div>
+  </footer>
+</body>
+</html>

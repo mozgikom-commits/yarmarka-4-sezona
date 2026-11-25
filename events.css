@@ -1,0 +1,216 @@
+/* Мероприятия — фирменные стили (кремовый фон, зелёный, оранжевый). */
+
+.events-page { background: var(--cream); }
+
+.events-hero {
+  padding: 40px 20px 30px;
+  background: linear-gradient(135deg, #f7f0df 0%, #fffaf0 48%, #edf1df 100%);
+}
+.events-hero-inner {
+  width: min(100% - 36px, 1160px);
+  margin-inline: auto;
+}
+.events-hero .eyebrow { margin-bottom: 10px; }
+.events-hero h1 {
+  margin: 0 0 12px;
+  color: var(--brown);
+  font: 700 clamp(34px, 9vw, 54px)/1.05 var(--serif);
+  letter-spacing: -.035em;
+}
+.events-hero .section-lead { max-width: 720px; }
+
+.events-section { padding-top: 34px; }
+
+.events-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: min(100% - 36px, 1160px);
+  margin: 0 auto 20px;
+}
+.events-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.events-filter {
+  appearance: none;
+  min-height: 42px;
+  padding: 9px 17px;
+  border: 1px solid #d8dfcc;
+  border-radius: 999px;
+  background: #f3f5ec;
+  color: #40533c;
+  font: 650 14px/1.3 var(--sans);
+  cursor: pointer;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+.events-filter:hover { border-color: #5c8659; background: #e6efdf; }
+.events-filter.is-active { border-color: var(--green-dark); background: var(--green-dark); color: #fff; }
+.events-filter:focus-visible { outline: 3px solid #e7b65a; outline-offset: 3px; }
+.events-status { margin: 0; color: var(--muted); font-size: 14px; }
+
+.events-layout {
+  display: grid;
+  width: min(100% - 36px, 1160px);
+  margin-inline: auto;
+  gap: 22px;
+}
+.events-list-wrap { min-width: 0; }
+
+/* Календарь */
+.events-calendar-panel {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+.calendar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.calendar-month {
+  margin: 0;
+  color: var(--brown);
+  font: 700 19px/1.2 var(--serif);
+  text-transform: capitalize;
+}
+.calendar-nav {
+  appearance: none;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: #fff;
+  color: var(--green-dark);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.calendar-nav:hover { background: #eef4e6; }
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 6px;
+}
+.calendar-weekdays span { text-align: center; color: #807a6b; font-size: 12px; font-weight: 700; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.calendar-day {
+  position: relative;
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: var(--ink);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.calendar-day.is-muted { color: #c4bdaa; }
+.calendar-day.is-today { background: #fff1d4; font-weight: 800; }
+.calendar-day.has-event { font-weight: 800; color: var(--green-dark); cursor: pointer; }
+.calendar-day.has-event:hover { background: #e8f0dd; }
+.calendar-day.has-event::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+.calendar-legend { display: flex; align-items: center; gap: 8px; margin: 12px 2px 0; color: #6c665a; font-size: 12px; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+
+/* Карточки мероприятий */
+.events-list { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.event-card {
+  overflow: hidden;
+  border: 1px solid rgba(101, 73, 38, .08);
+  border-radius: 20px;
+  background: var(--paper);
+  box-shadow: 0 8px 22px rgba(69, 48, 25, .08);
+}
+.event-card-media {
+  display: flex;
+  min-height: 150px;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(130deg, #d9e8b4, #f6d8a2);
+  font-size: 60px;
+}
+.event-card-media img { width: 100%; height: 200px; object-fit: cover; }
+.event-card-body { padding: 18px 20px 20px; }
+.event-card-date { color: var(--green-dark); font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; }
+.event-card h3 { margin: 8px 0 10px; color: var(--brown); font: 700 22px/1.2 var(--serif); }
+.event-card p { margin: 0 0 10px; color: var(--muted); font-size: 15px; line-height: 1.55; }
+.event-card-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 14px; color: #55584e; font-size: 14px; }
+.event-card-meta span { display: inline-flex; align-items: center; gap: 5px; }
+.event-badge {
+  display: inline-block;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: #e6f0e4;
+  color: #246342;
+  font-size: 12px;
+  font-weight: 750;
+}
+.event-badge.is-past { background: #efeae0; color: #6f6553; }
+.event-documents { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line); }
+.event-documents h4 { margin: 0 0 8px; color: var(--brown); font: 700 15px var(--serif); }
+.event-documents a {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 7px;
+  margin: 3px 6px 3px 0;
+  color: var(--green-dark);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+}
+.event-documents a:hover { text-decoration: underline; }
+
+.empty-state {
+  padding: 34px 20px;
+  text-align: center;
+  color: var(--muted);
+  background: var(--paper);
+  border: 1px dashed var(--line);
+  border-radius: 18px;
+}
+
+/* Галерея прошедших мероприятий */
+.events-gallery-section { border-top: 1px solid #e9dfc8; }
+.gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: min(100% - 36px, 1160px); margin-inline: auto; }
+.gallery-item {
+  overflow: hidden;
+  border: 1px solid rgba(101, 73, 38, .08);
+  border-radius: 16px;
+  background: var(--paper);
+  box-shadow: 0 6px 18px rgba(69, 48, 25, .07);
+}
+.gallery-item img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.gallery-item figcaption { padding: 9px 12px 11px; color: #6c665a; font-size: 13px; line-height: 1.4; }
+
+@media (min-width: 600px) {
+  .events-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gallery-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+  .events-hero { padding: 54px 24px 40px; }
+  .events-layout { grid-template-columns: 340px minmax(0, 1fr); gap: 26px; align-items: start; }
+  .events-calendar-panel { position: sticky; top: 100px; }
+  .events-list { grid-template-columns: 1fr; }
+}
+@media (min-width: 1240px) {
+  .events-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 374px) {
+  .calendar-day { min-height: 34px; font-size: 13px; }
+  .event-card-media { min-height: 120px; }
+}

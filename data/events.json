@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "events": [
+    {
+      "id": "demo-winter-1",
+      "title": "Дегустация продуктов Приморья",
+      "description": "Знакомство с продукцией местных производителей и сезонными новинками.",
+      "event_date": "2026-12-05",
+      "start_time": "12:00",
+      "end_time": "14:00",
+      "place": "Ярмарка «4 сезона», ул. Жигура, 2Б",
+      "cover_url": "",
+      "status": "published",
+      "photos": [],
+      "documents": []
+    },
+    {
+      "id": "demo-winter-2",
+      "title": "Встреча с фермерами",
+      "description": "Обсуждаем урожай, качество продуктов и секреты фермерского дела.",
+      "event_date": "2026-12-12",
+      "start_time": "11:00",
+      "end_time": "12:30",
+      "place": "Торговая площадка ярмарки",
+      "cover_url": "",
+      "status": "published",
+      "photos": [],
+      "documents": []
+    },
+    {
+      "id": "demo-winter-3",
+      "title": "Праздник зимнего урожая",
+      "description": "Семейная программа, сезонные продукты и праздничное настроение.",
+      "event_date": "2026-12-19",
+      "start_time": "13:00",
+      "end_time": "16:00",
+      "place": "Ярмарка «4 сезона», ул. Жигура, 2Б",
+      "cover_url": "",
+      "status": "published",
+      "photos": [],
+      "documents": []
+    },
+    {
+      "id": "demo-autumn-1",
+      "title": "Осенняя ярмарка урожая",
+      "description": "Сезонные овощи, домашние заготовки и дегустации от местных производителей.",
+      "event_date": "2026-11-07",
+      "start_time": "10:00",
+      "end_time": "18:00",
+      "place": "Ярмарка «4 сезона», ул. Жигура, 2Б",
+      "cover_url": "",
+      "status": "published",
+      "photos": [],
+      "documents": []
+    }
+  ]
+}
