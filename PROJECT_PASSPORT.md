@@ -115,3 +115,8 @@ P2: проверить доступность всех форм и PDF без а
 - **#4 (приказ №54-од):** ссылка на приказ присутствует в `index.html` (строки 73 и 136, Google Drive `/view`). Живой анонимный доступ к Drive и действующему домену инструменту проверки недоступен — остаётся открытым.
 - **#5 (формы/PDF без авторизации):** формы — локальные файлы `docs/downloads/application.docx` и `docs/downloads/personal-data-consent.docx` (коммит f538fc7 «Serve fair application forms without Google sign-in»), отдаются GitHub Pages без авторизации. Внимание: запись паспорта от 24.11 («ссылки заменены на Google Drive») устарела — f538fc7 позднее заменил их на локальные файлы; актуализировано здесь. Приказ — публичная ссылка Drive. Живая анонимная загрузка остаётся непроверенной (домен недоступен инструменту).
 - Повторная разработка принятых функций не выполнялась.
+
+## 26.11.2026 — Исправление импорта реестра и план релиза (lead)
+- Найден и исправлен дефект Supabase-пути импорта реестра: `js/fair-data.js` использует `upsert(..., { onConflict: "name" })`, но у `public.registry` не было уникального индекса по `name` (импорт Excel/CSV падал бы «no unique or exclusion constraint»). Добавлен `create unique index if not exists registry_name_key on public.registry (name)` в миграцию; в seed 102 уникальных наименования (дублей нет). Коммит bdac81f.
+- Добавлен облачный E2E `tools/qa/supabase-e2e.cjs` (Auth/RLS/Storage/журнал, самонастройка админа через service_role, синтетика) — запускается после появления `.env.supabase`.
+- Составлен `docs/RELEASE_ROLLBACK.md` — план релиза (merge PR #6 → main → Pages → переключение на Supabase) и отката (revert merge / вернуть `backend: "static"`). Не выполнялся, требует разрешения владельца.
