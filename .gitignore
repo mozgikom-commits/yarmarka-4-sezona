@@ -4,3 +4,7 @@ tools/local-server/uploads/
 node_modules/
 *.log
 .DS_Store
+
+# Локальные секреты (Supabase/токены) — не коммитить
+.env
+.env.*
