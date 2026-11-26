@@ -122,6 +122,9 @@ create table if not exists public.registry (
   updated_at timestamptz not null default now()
 );
 
+-- Уникальный индекс по наименованию: основа для upsert-импорта реестра (onConflict: "name").
+create unique index if not exists registry_name_key on public.registry (name);
+
 alter table public.registry enable row level security;
 
 -- Публичный доступ к базовой таблице закрыт.
