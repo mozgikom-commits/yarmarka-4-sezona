@@ -8,3 +8,5 @@ node_modules/
 # Локальные секреты (Supabase/токены) — не коммитить
 .env
 .env.*
+# Шаблон без секретов — отслеживается
+!.env.supabase.example
