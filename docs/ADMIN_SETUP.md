@@ -18,19 +18,30 @@
 5. (Рекомендуется) Развернуть Edge Function для серверной проверки файлов:
    `supabase functions deploy upload-asset --no-verify-jwt`.
 
-## 2. Указать доступы в `js/fair-config.js`
+## 2. Указать доступы через загрузчик Tilda (ключи вне репозитория)
+
+Ключи в репозиторий не помещаются. Публичный сайт переключается на Supabase
+загрузчиком Tilda: блок T123 формирует URL iframe с параметрами, а
+`js/fair-config.js` их подхватывает и сохраняет в `localStorage` (переживает
+переходы между страницами внутри iframe на том же origin).
+
+В блоке Tilda (не в репозитории) задать:
 
 ```js
-window.FAIR_CONFIG = {
-  backend: "supabase",
-  supabaseUrl: "https://<project>.supabase.co",
-  supabaseAnonKey: "<anon public key>",
-  localApi: "/api"
-};
+var backend = 'supabase';
+var supabaseUrl = 'https://<project-ref>.supabase.co';
+var supabaseAnonKey = '<anon public key>'; // Project Settings → API
 ```
 
-Ключи в репозиторий не помещать: переопределить `window.FAIR_CONFIG` на хостинге
-или добавить значения при сборке. Анонимный ключ публичный; секрет `service_role` не используется в браузере.
+Загрузчик добавит к `src` iframe:
+`?backend=supabase&supabaseUrl=…&supabaseAnonKey=…`.
+
+- anon-ключ публичный и используется в браузере;
+- секрет `service_role` в браузер/блок Tilda НЕ вставлять — он нужен только
+  серверным скриптам (миграции, seed, создание администратора, E2E) из `.env.supabase`.
+
+Прямое указание `window.FAIR_CONFIG` (сборка/хостинг) тоже поддерживается и имеет
+приоритет над параметрами URL.
 
 ## 3. Публичный доступ
 

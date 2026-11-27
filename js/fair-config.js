@@ -4,20 +4,72 @@
  *           "supabase" — Supabase (Postgres + Auth + Storage);
  *           "local"    — локальный тестовый сервер (./tools/local-server).
  *
- * Значения Supabase подставляются владельцем. Ключи в репозитории не хранятся.
- * При запуске локального тестового сервера (порт 4173) по умолчанию используется
- * бэкенд "local"; иначе — "static" (публичный сайт читает локальные JSON).
+ * Порядок определения конфигурации:
+ *   1) window.FAIR_CONFIG, если задан до загрузки этого скрипта (сборка/хостинг);
+ *   2) параметры URL (?backend=supabase&supabaseUrl=…&supabaseAnonKey=…), которые
+ *      подставляет загрузчик Tilda в src iframe — реальные ключи в репозиторий не попадают;
+ *   3) localStorage — конфигурация из параметров сохраняется, чтобы пережить переходы
+ *      между страницами внутри iframe на том же origin;
+ *   4) значение по умолчанию: "local" на локальном тестовом сервере (порт 4173),
+ *      иначе "static" (публичный сайт читает локальные JSON).
+ *
+ * anon-ключ публичный и используется в браузере; service_role-ключ сюда НЕ вставляется.
  */
-const __defaultBackend = (typeof location !== "undefined" && location.port === "4173") ? "local" : "static";
-window.FAIR_CONFIG = window.FAIR_CONFIG || {
-  backend: __defaultBackend,
+const __FAIR_LS_KEY = "fair4sezona:config";
+const __FAIR_BACKENDS = ["static", "supabase", "local"];
+
+const __fairReadLs = () => {
+  try {
+    const raw = localStorage.getItem(__FAIR_LS_KEY);
+    const parsed = raw ? JSON.parse(raw) : null;
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch (_) {
+    return null;
+  }
+};
+const __fairWriteLs = (cfg) => {
+  try { localStorage.setItem(__FAIR_LS_KEY, JSON.stringify(cfg)); } catch (_) {}
+};
+const __fairFromParams = () => {
+  if (typeof location === "undefined" || !location.search) return null;
+  const p = new URLSearchParams(location.search);
+  const backend = p.get("backend");
+  if (!__FAIR_BACKENDS.includes(backend)) return null;
+  return {
+    backend,
+    supabaseUrl: p.get("supabaseUrl") || "",
+    supabaseAnonKey: p.get("supabaseAnonKey") || "",
+    localApi: "/api"
+  };
+};
+const __fairDefault = () => ({
+  backend: (typeof location !== "undefined" && location.port === "4173") ? "local" : "static",
   supabaseUrl: "",
   supabaseAnonKey: "",
   localApi: "/api"
-};
+});
+const __fairSanitize = (cfg) => ({
+  backend: __FAIR_BACKENDS.includes(cfg && cfg.backend) ? cfg.backend : "static",
+  supabaseUrl: typeof (cfg && cfg.supabaseUrl) === "string" ? cfg.supabaseUrl : "",
+  supabaseAnonKey: typeof (cfg && cfg.supabaseAnonKey) === "string" ? cfg.supabaseAnonKey : "",
+  localApi: (cfg && cfg.localApi) || "/api"
+});
 
 (function () {
-  const cfg = window.FAIR_CONFIG;
-  cfg.isSupabase = () => cfg.backend === "supabase" && cfg.supabaseUrl && cfg.supabaseAnonKey;
-  cfg.isLocal = () => cfg.backend === "local";
+  const preSet = window.FAIR_CONFIG;
+  const paramCfg = __fairFromParams();
+  let cfg;
+  if (preSet) {
+    cfg = preSet;
+  } else {
+    cfg = __fairSanitize(paramCfg || __fairReadLs() || __fairDefault());
+    if (paramCfg) __fairWriteLs(cfg);
+  }
+  if (!cfg.isSupabase) {
+    cfg.isSupabase = () => cfg.backend === "supabase" && Boolean(cfg.supabaseUrl && cfg.supabaseAnonKey);
+  }
+  if (!cfg.isLocal) {
+    cfg.isLocal = () => cfg.backend === "local";
+  }
+  window.FAIR_CONFIG = cfg;
 })();
