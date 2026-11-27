@@ -2,21 +2,23 @@
  *
  * backend: "static"    — публичный сайт читает локальные JSON (без бэкенда);
  *           "supabase" — Supabase (Postgres + Auth + Storage);
- *           "local"    — локальный тестовый сервер (./tools/local-server).
+ *           "php"      — REG.RU (PHP + SQLite), REST /api/*;
+ *           "local"    — локальный тестовый Node-сервер (./tools/local-server).
  *
  * Порядок определения конфигурации:
  *   1) window.FAIR_CONFIG, если задан до загрузки этого скрипта (сборка/хостинг);
- *   2) параметры URL (?backend=supabase&supabaseUrl=…&supabaseAnonKey=…), которые
- *      подставляет загрузчик Tilda в src iframe — реальные ключи в репозиторий не попадают;
+ *   2) параметры URL (?backend=php&apiBase=…), которые подставляет загрузчик Tilda
+ *      в src iframe — реальные адреса/ключи в репозиторий не попадают;
  *   3) localStorage — конфигурация из параметров сохраняется, чтобы пережить переходы
  *      между страницами внутри iframe на том же origin;
  *   4) значение по умолчанию: "local" на локальном тестовом сервере (порт 4173),
  *      иначе "static" (публичный сайт читает локальные JSON).
  *
- * anon-ключ публичный и используется в браузере; service_role-ключ сюда НЕ вставляется.
+ * anon-ключ Supabase публичный и используется в браузере; service_role-ключ сюда НЕ вставляется.
+ * apiBase для backend=php — абсолютный или относительный базовый URL REST API.
  */
 const __FAIR_LS_KEY = "fair4sezona:config";
-const __FAIR_BACKENDS = ["static", "supabase", "local"];
+const __FAIR_BACKENDS = ["static", "supabase", "php", "local"];
 
 const __fairReadLs = () => {
   try {
@@ -39,20 +41,20 @@ const __fairFromParams = () => {
     backend,
     supabaseUrl: p.get("supabaseUrl") || "",
     supabaseAnonKey: p.get("supabaseAnonKey") || "",
-    localApi: "/api"
+    apiBase: p.get("apiBase") || ""
   };
 };
 const __fairDefault = () => ({
   backend: (typeof location !== "undefined" && location.port === "4173") ? "local" : "static",
   supabaseUrl: "",
   supabaseAnonKey: "",
-  localApi: "/api"
+  apiBase: "/api"
 });
 const __fairSanitize = (cfg) => ({
   backend: __FAIR_BACKENDS.includes(cfg && cfg.backend) ? cfg.backend : "static",
   supabaseUrl: typeof (cfg && cfg.supabaseUrl) === "string" ? cfg.supabaseUrl : "",
   supabaseAnonKey: typeof (cfg && cfg.supabaseAnonKey) === "string" ? cfg.supabaseAnonKey : "",
-  localApi: (cfg && cfg.localApi) || "/api"
+  apiBase: (cfg && cfg.apiBase) || (cfg && cfg.localApi) || "/api"
 });
 
 (function () {
@@ -60,13 +62,16 @@ const __fairSanitize = (cfg) => ({
   const paramCfg = __fairFromParams();
   let cfg;
   if (preSet) {
-    cfg = preSet;
+    cfg = __fairSanitize(preSet);
   } else {
     cfg = __fairSanitize(paramCfg || __fairReadLs() || __fairDefault());
     if (paramCfg) __fairWriteLs(cfg);
   }
   if (!cfg.isSupabase) {
     cfg.isSupabase = () => cfg.backend === "supabase" && Boolean(cfg.supabaseUrl && cfg.supabaseAnonKey);
+  }
+  if (!cfg.isPhp) {
+    cfg.isPhp = () => cfg.backend === "php";
   }
   if (!cfg.isLocal) {
     cfg.isLocal = () => cfg.backend === "local";

@@ -1,0 +1,17 @@
+# Ярмарка «4 сезона» — маршрутизация API (Apache/REG.RU).
+# Все запросы к /api/... направляются на front controller index.php.
+
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L,QSA]
+</IfModule>
+
+# Запрет прямого доступа к служебным файлам.
+<FilesMatch "\.(sql|md|json)$">
+    Require all denied
+</FilesMatch>

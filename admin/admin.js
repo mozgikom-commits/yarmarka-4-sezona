@@ -23,10 +23,18 @@
   };
 
   /* ---------- Авторизация ---------- */
+  const applyRoleGating = () => {
+    const role = window.fairData?.role?.() || "";
+    const canRegistry = role !== "editor"; // editor: только мероприятия
+    document.querySelectorAll("[data-tab='registry']").forEach((el) => { el.hidden = !canRegistry; });
+    document.querySelectorAll("[data-goto='registry']").forEach((el) => { el.hidden = !canRegistry; });
+  };
+
   const showApp = (user) => {
     $("#login-view").hidden = true;
     $("#app-view").hidden = false;
     $("#sidebar-user").textContent = user?.email ? `Вход: ${user.email}` : "";
+    applyRoleGating();
     loadDashboard();
   };
   const showLogin = () => {
@@ -38,8 +46,9 @@
     const note = $("#backend-note");
     const t = window.fairData?.backendType;
     if (t === "supabase") note.textContent = "Подключение: Supabase.";
+    else if (t === "php") note.textContent = "Подключение: сервер ярмарки (REG.RU / PHP / SQLite).";
     else if (t === "local") note.textContent = "Локальный тестовый сервер. Демо-доступ: admin@4sezona.ru / demo1234.";
-    else note.textContent = "Бэкенд не настроен — вход и административные функции недоступны. Укажите Supabase в js/fair-config.js.";
+    else note.textContent = "Бэкенд не настроен — вход и административные функции недоступны. Укажите backend=php (REG.RU) или Supabase.";
   };
 
   $("#login-form").addEventListener("submit", async (e) => {

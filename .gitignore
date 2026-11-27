@@ -10,3 +10,7 @@ node_modules/
 .env.*
 # Шаблон без секретов — отслеживается
 !.env.supabase.example
+
+# REG.RU (PHP + SQLite): приватный каталог вне webroot и доступы хостинга
+yarmarka-private/
+.env.regru

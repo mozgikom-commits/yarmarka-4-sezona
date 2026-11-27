@@ -176,11 +176,17 @@
     };
   };
 
-  /* ---------- LOCAL (тестовый сервер) ---------- */
-  const localBackend = () => {
-    const base = cfg.localApi || "/api";
+  /* ---------- REST (backend=php — REG.RU, и backend=local — тестовый сервер) ---------- */
+  const restBackend = () => {
+    const base = cfg.apiBase || cfg.localApi || "/api";
     let token = localStorage.getItem("fair-admin-token") || "";
-    const headers = (extra) => Object.assign({ "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) }, extra || {});
+    let csrf = localStorage.getItem("fair-admin-csrf") || "";
+    let role = localStorage.getItem("fair-admin-role") || "";
+    const headers = (extra) => Object.assign({
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(csrf ? { "X-CSRF-Token": csrf } : {})
+    }, extra || {});
     const req = async (method, path, body) => {
       const res = await fetch(base + path, { method, headers: headers(), body: body ? JSON.stringify(body) : undefined });
       if (res.status === 401) throw Object.assign(new Error("unauthorized"), { status: 401 });
@@ -192,7 +198,11 @@
       const q = `/upload?bucket=${encodeURIComponent(bucket)}&name=${encodeURIComponent(file.name)}`;
       const res = await fetch(base + q, {
         method: "POST",
-        headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), "Content-Type": file.type || "application/octet-stream" },
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          ...(csrf ? { "X-CSRF-Token": csrf } : {}),
+          "Content-Type": file.type || "application/octet-stream"
+        },
         body: file
       });
       if (res.status === 401) throw Object.assign(new Error("unauthorized"), { status: 401 });
@@ -202,22 +212,33 @@
 
     return {
       isSupabase: false,
-      admin: () => ({ isAdmin: () => Boolean(token) }),
+      admin: () => ({ isAdmin: () => Boolean(token), role: () => role }),
       async getPublicEvents() { return (await req("GET", "/public/events")).map(normalizeEvent); },
       async getPublicRegistry() { return (await req("GET", "/public/registry")).map(stripStaff); },
       async login(email, password) {
         const r = await req("POST", "/auth/login", { email, password });
-        token = r.token;
+        token = r.token || "";
+        csrf = r.csrf || "";
+        role = r.user && r.user.role ? r.user.role : "";
         localStorage.setItem("fair-admin-token", token);
+        localStorage.setItem("fair-admin-csrf", csrf);
+        localStorage.setItem("fair-admin-role", role);
         return r;
       },
       async logout() {
         try { await req("POST", "/auth/logout"); } catch (_) {}
-        token = "";
+        token = ""; csrf = ""; role = "";
         localStorage.removeItem("fair-admin-token");
+        localStorage.removeItem("fair-admin-csrf");
+        localStorage.removeItem("fair-admin-role");
       },
       async getSession() {
-        try { const r = await req("GET", "/auth/session"); return { user: r.user, token }; } catch (_) { return null; }
+        try {
+          const r = await req("GET", "/auth/session");
+          role = r.user && r.user.role ? r.user.role : "";
+          localStorage.setItem("fair-admin-role", role);
+          return { user: r.user, token };
+        } catch (_) { return null; }
       },
       async listEvents() { return (await req("GET", "/events")).map(normalizeEvent); },
       async saveEvent(ev) { return normalizeEvent(await req(ev.id && ev.id !== "new" ? "PUT" : "POST", ev.id && ev.id !== "new" ? `/events/${ev.id}` : "/events", ev)); },
@@ -234,7 +255,8 @@
     };
   };
 
-  const backend = cfg.isSupabase() ? supabaseBackend() : (cfg.isLocal() ? localBackend() : staticBackend);
+  const restModes = ["php", "local"];
+  const backend = cfg.isSupabase() ? supabaseBackend() : (restModes.includes(cfg.backend) ? restBackend() : staticBackend);
 
   window.fairData = {
     getPublicEvents: () => backend.getPublicEvents(),
@@ -255,6 +277,7 @@
     importRegistry: (rows) => backend.importRegistry(rows),
     listChangeLog: () => backend.listChangeLog(),
     uploadAsset: (file, bucket) => backend.uploadAsset(file, bucket),
-    backendType: cfg.isSupabase() ? "supabase" : (cfg.isLocal() ? "local" : "static")
+    role: () => (backend.admin ? backend.admin().role() : ""),
+    backendType: cfg.isSupabase() ? "supabase" : (restModes.includes(cfg.backend) ? cfg.backend : "static")
   };
 })();
