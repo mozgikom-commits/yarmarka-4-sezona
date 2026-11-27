@@ -12,6 +12,12 @@ DirectoryIndex index.php
     RewriteRule ^ index.php [L,QSA]
 </IfModule>
 
+# Проброс заголовка Authorization в PHP (CGI/FastCGI на хостинге отбрасывает его,
+# из-за чего серверные сессии `Bearer` не читались бы).
+<IfModule mod_setenvif.c>
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+</IfModule>
+
 # Запрет прямого доступа к служебным файлам.
 <FilesMatch "\.(sql|md|json)$">
     Require all denied
