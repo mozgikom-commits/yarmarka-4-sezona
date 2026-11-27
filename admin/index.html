@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f0df">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="../assets/favicon.png" type="image/png">
+  <link rel="stylesheet" href="./admin.css?v=20261125-1">
+  <title>Кабинет администратора — Ярмарка «4 сезона»</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
+  <script src="../js/fair-config.js" defer></script>
+  <script src="../js/fair-data.js" defer></script>
+  <script src="./excel.js?v=20261125-1" defer></script>
+  <script src="./admin.js?v=20261125-1" defer></script>
+</head>
+<body class="admin-body">
+  <div class="admin-shell" id="login-view">
+    <div class="login-card">
+      <img class="login-logo" src="../assets/logo-4-sezona.png" alt="" width="72" height="69">
+      <h1>Кабинет администратора</h1>
+      <p class="login-subtitle">Ярмарка «4 сезона» · вход по логину и паролю</p>
+      <form id="login-form" class="login-form" novalidate>
+        <label class="field">
+          <span>Электронная почта</span>
+          <input type="email" name="email" autocomplete="username" required placeholder="admin@example.ru">
+        </label>
+        <label class="field">
+          <span>Пароль</span>
+          <input type="password" name="password" autocomplete="current-password" required placeholder="••••••••">
+        </label>
+        <p class="login-error" id="login-error" role="alert" hidden></p>
+        <button class="btn btn-primary" type="submit" id="login-submit">Войти</button>
+      </form>
+      <p class="login-note" id="backend-note"></p>
+    </div>
+  </div>
+
+  <div class="admin-app" id="app-view" hidden>
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img src="../assets/logo-4-sezona.png" alt="" width="40" height="39">
+        <span>Ярмарка<br><b>4 сезона</b></span>
+      </div>
+      <nav class="sidebar-nav" aria-label="Разделы кабинета">
+        <button class="side-link active" type="button" data-tab="dashboard">⌂ Главная</button>
+        <button class="side-link" type="button" data-tab="events">▣ Мероприятия</button>
+        <button class="side-link" type="button" data-tab="registry">☷ Реестр</button>
+        <button class="side-link side-logout" type="button" id="logout-btn">↪ Выход</button>
+      </nav>
+      <p class="sidebar-user" id="sidebar-user"></p>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <h1 id="section-title">Главная</h1>
+        <button class="menu-toggle" type="button" id="admin-menu-toggle" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span></button>
+      </header>
+
+      <!-- Главная -->
+      <section class="tab-panel" id="tab-dashboard">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <span class="stat-label">Опубликовано мероприятий</span>
+            <strong id="stat-published">—</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Участников реестра</span>
+            <strong id="stat-participants">—</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Ближайших мероприятий</span>
+            <strong id="stat-upcoming">—</strong>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Быстрые действия</h2></div>
+          <div class="quick-actions">
+            <button class="btn btn-primary" type="button" data-goto="events" data-action="new-event">+ Добавить мероприятие</button>
+            <button class="btn btn-secondary" type="button" data-goto="registry">Открыть реестр</button>
+            <a class="btn btn-secondary" href="../events.html" target="_blank" rel="noopener noreferrer">↗ Публичная афиша</a>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Ближайшие мероприятия</h2></div>
+          <div id="dashboard-upcoming" class="dashboard-upcoming"></div>
+        </div>
+      </section>
+
+      <!-- Мероприятия -->
+      <section class="tab-panel" id="tab-events" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Мероприятия</h2>
+            <button class="btn btn-primary" type="button" id="new-event-btn">+ Новое мероприятие</button>
+          </div>
+          <div class="events-filter-bar">
+            <button class="chip is-active" type="button" data-status-filter="all">Все</button>
+            <button class="chip" type="button" data-status-filter="published">Опубликованные</button>
+            <button class="chip" type="button" data-status-filter="draft">Черновики</button>
+            <button class="chip" type="button" data-status-filter="archived">Архив</button>
+          </div>
+          <div id="events-table" class="admin-table-wrap"></div>
+        </div>
+      </section>
+
+      <!-- Реестр -->
+      <section class="tab-panel" id="tab-registry" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Реестр участников</h2>
+            <div class="panel-actions">
+              <button class="btn btn-secondary" type="button" id="import-btn">⇪ Импорт Excel/CSV</button>
+              <button class="btn btn-secondary" type="button" id="export-btn">⇩ Экспорт Excel/CSV</button>
+              <button class="btn btn-primary" type="button" id="new-registry-btn">+ Добавить участника</button>
+            </div>
+          </div>
+          <div class="registry-search">
+            <label class="search-field"><span class="visually-hidden">Поиск по наименованию или ИНН</span><input id="registry-admin-search" type="search" placeholder="Поиск по наименованию или ИНН" autocomplete="off"></label>
+            <label class="select-field"><span class="visually-hidden">Статус</span>
+              <select id="registry-status-filter">
+                <option value="all">Все статусы</option>
+                <option value="active">Действующие</option>
+                <option value="archived">Архив</option>
+              </select>
+            </label>
+          </div>
+          <p class="registry-summary" id="registry-summary" aria-live="polite"></p>
+          <div id="registry-table" class="admin-table-wrap"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Журнал изменений реестра</h2></div>
+          <div id="change-log" class="change-log"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Модальное окно: мероприятие -->
+  <dialog id="event-dialog" class="admin-dialog">
+    <form id="event-form" method="dialog" class="dialog-form" novalidate>
+      <div class="dialog-head">
+        <h2 id="event-dialog-title">Новое мероприятие</h2>
+        <button class="dialog-close" type="button" data-close="event-dialog" aria-label="Закрыть">×</button>
+      </div>
+      <input type="hidden" name="id" value="new">
+      <div class="form-grid">
+        <label class="field wide"><span>Название *</span><input name="title" required placeholder="Например, дегустация"></label>
+        <label class="field"><span>Дата *</span><input name="date" type="date" required></label>
+        <label class="field"><span>Время начала</span><input name="time" type="time" value="12:00"></label>
+        <label class="field"><span>Время окончания</span><input name="endTime" type="time"></label>
+        <label class="field"><span>Место проведения</span><input name="place" value="Ярмарка «4 сезона», ул. Жигура, 2Б"></label>
+        <label class="field wide"><span>Описание</span><textarea name="description" rows="3" placeholder="Краткое описание мероприятия"></textarea></label>
+        <label class="field"><span>Статус</span>
+          <select name="status">
+            <option value="draft">Черновик</option>
+            <option value="published">Опубликовано</option>
+            <option value="archived">Архив</option>
+          </select>
+        </label>
+        <label class="field"><span>Обложка (фото)</span><input name="cover" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></label>
+        <label class="field wide"><span>Фотографии галереи (можно несколько)</span><input name="photos" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple></label>
+        <label class="field wide"><span>Документы (PDF, DOCX, XLSX)</span><input name="documents" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx" multiple></label>
+      </div>
+      <p class="form-error" id="event-form-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button class="btn btn-secondary" type="button" id="event-preview-btn">Предпросмотр</button>
+        <button class="btn btn-secondary" type="button" data-close="event-dialog">Отмена</button>
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Модальное окно: участник реестра -->
+  <dialog id="registry-dialog" class="admin-dialog">
+    <form id="registry-form" method="dialog" class="dialog-form" novalidate>
+      <div class="dialog-head">
+        <h2 id="registry-dialog-title">Новый участник</h2>
+        <button class="dialog-close" type="button" data-close="registry-dialog" aria-label="Закрыть">×</button>
+      </div>
+      <input type="hidden" name="id" value="new">
+      <div class="form-grid">
+        <label class="field wide"><span>Наименование (публичное) *</span><input name="name" required placeholder="ЛПХ / ИП / ООО …"></label>
+        <label class="field wide"><span>Продукция (публичное)</span><input name="products" placeholder="Овощи, сыры, мёд…"></label>
+        <label class="field"><span>ИНН (служебное)</span><input name="inn" inputmode="numeric" placeholder="12 цифр"></label>
+        <label class="field"><span>Телефон (служебное)</span><input name="phone" placeholder="+7 …"></label>
+        <label class="field"><span>Населённый пункт</span><input name="settlement" placeholder="Владивосток"></label>
+        <label class="field"><span>ФИО представителя</span><input name="representative" placeholder="Фамилия Имя Отчество"></label>
+        <label class="field"><span>Статус</span>
+          <select name="status">
+            <option value="active">Действующий</option>
+            <option value="archived">Архив</option>
+          </select>
+        </label>
+        <label class="field wide"><span>Примечания (служебное)</span><textarea name="notes" rows="2" placeholder="Внутренние заметки"></textarea></label>
+      </div>
+      <p class="form-error" id="registry-form-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button class="btn btn-secondary" type="button" data-close="registry-dialog">Отмена</button>
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Модальное окно: предпросмотр -->
+  <dialog id="preview-dialog" class="admin-dialog">
+    <div class="dialog-head"><h2>Предпросмотр мероприятия</h2><button class="dialog-close" type="button" data-close="preview-dialog" aria-label="Закрыть">×</button></div>
+    <div id="preview-body" class="preview-body"></div>
+  </dialog>
+
+  <!-- Скрытый input для импорта -->
+  <input type="file" id="import-file" accept=".csv,.xls,.xlsx" hidden>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

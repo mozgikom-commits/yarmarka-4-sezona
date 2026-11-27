@@ -4,7 +4,23 @@
 (function () {
   'use strict';
   var host = document.getElementById('yarmarka-host');
-  var siteUrl = 'https://mozgikom-commits.github.io/yarmarka-4-sezona/?v=20261119-4';
+
+  // ── Бэкенд ярмарки ────────────────────────────────────────────────────────
+  // "static"   — публичный сайт читает локальные JSON (текущий режим).
+  // "supabase" — Supabase (Auth + Postgres + Storage). Реальные ключи вставляются
+  //              В БЛОКЕ TILDA, не в этом шаблоне и не в репозитории GitHub.
+  //              anon-ключ публичный; service_role-ключ сюда НЕ вставлять.
+  var backend = 'static';
+  var supabaseUrl = '';     // https://<project-ref>.supabase.co
+  var supabaseAnonKey = ''; // публичный anon-ключ (Project Settings → API)
+
+  var query = 'v=20261119-4';
+  if (backend === 'supabase' && supabaseUrl && supabaseAnonKey) {
+    query += '&backend=supabase'
+      + '&supabaseUrl=' + encodeURIComponent(supabaseUrl)
+      + '&supabaseAnonKey=' + encodeURIComponent(supabaseAnonKey);
+  }
+  var siteUrl = 'https://mozgikom-commits.github.io/yarmarka-4-sezona/?' + query;
   var trustedOrigin = new URL(siteUrl).origin;
   if (!host) return;
 

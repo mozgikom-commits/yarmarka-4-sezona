@@ -1,0 +1,16 @@
+# Локальный тестовый сервер
+tools/local-server/state.json
+tools/local-server/uploads/
+node_modules/
+*.log
+.DS_Store
+
+# Локальные секреты (Supabase/токены) — не коммитить
+.env
+.env.*
+# Шаблон без секретов — отслеживается
+!.env.supabase.example
+
+# REG.RU (PHP + SQLite): приватный каталог вне webroot и доступы хостинга
+yarmarka-private/
+.env.regru
