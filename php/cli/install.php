@@ -16,8 +16,9 @@ require_once __DIR__ . '/../lib/bootstrap.php';
  * администратора с password_hash().
  *
  * Использование:
- *   php cli/install.php --email=admin@example.ru [--password=...] [--role=admin]
+ *   php cli/install.php --email=admin@example.ru [--password=...] [--role=admin] [--origin=...]
  *   php cli/install.php --email=admin@example.ru   # пароль будет сгенерирован и показан
+ *   # --origin=<https://...> (можно несколько) — доп. разрешённые Origin поверх умолчаний.
  */
 
 function fairArg(string $name, ?string $default = null): ?string
@@ -38,11 +39,10 @@ function fairDefaultConfig(): array
 {
     return [
         'allowedOrigins' => [
+            // Только домены фронтенда ярмарки: GitHub Pages и боевой домен
+            // (Origin браузер всегда передаёт в punycode-виде).
             'https://mozgikom-commits.github.io',
             'https://xn--4-8sboi4afs.online',
-            'https://4сезона.online',
-            'http://127.0.0.1:4173',
-            'http://localhost:4173',
         ],
         'secret' => bin2hex(random_bytes(32)),
         'sessionTtlSeconds' => 28800,
@@ -51,6 +51,23 @@ function fairDefaultConfig(): array
         'maxImageBytes' => 10485760,
         'maxDocBytes' => 20971520,
     ];
+}
+
+/** Собирает повторяемые аргументы --origin=... (доп. разрешённые Origin, например
+ *  для локального E2E: --origin=http://127.0.0.1:4173). */
+function fairOriginArgs(): array
+{
+    global $argv;
+    $out = [];
+    foreach ($argv as $a) {
+        if (str_starts_with($a, '--origin=')) {
+            $v = substr($a, strlen('--origin='));
+            if ($v !== '' && !in_array($v, $out, true)) {
+                $out[] = $v;
+            }
+        }
+    }
+    return $out;
 }
 
 function fairInstallSchema(PDO $db): void
@@ -64,11 +81,15 @@ function fairInstallSchema(PDO $db): void
 
 function fairSeed(PDO $db): void
 {
-    $root = dirname(__DIR__, 2);
+    $root = getenv('YARMARKA_DATA_DIR');
+    if (!is_string($root) || trim($root) === '') {
+        $root = dirname(__DIR__, 2) . '/data';
+    }
+    $root = rtrim($root, '/');
 
     $count = (int) $db->query('SELECT COUNT(*) FROM registry')->fetchColumn();
     if ($count === 0) {
-        $raw = file_get_contents($root . '/data/participants-public.json');
+        $raw = file_get_contents($root . '/participants-public.json');
         if ($raw === false) {
             throw new RuntimeException('participants-public.json missing');
         }
@@ -91,7 +112,7 @@ function fairSeed(PDO $db): void
 
     $evCount = (int) $db->query('SELECT COUNT(*) FROM events')->fetchColumn();
     if ($evCount === 0) {
-        $raw = file_get_contents($root . '/data/events.json');
+        $raw = file_get_contents($root . '/events.json');
         if ($raw === false) {
             throw new RuntimeException('events.json missing');
         }
@@ -176,6 +197,9 @@ chmod($dir, 0700);
 $configPath = fairPrivatePath('config.json');
 if (!is_file($configPath)) {
     $config = fairDefaultConfig();
+    foreach (fairOriginArgs() as $origin) {
+        $config['allowedOrigins'][] = $origin;
+    }
     $mask = umask(0077);
     file_put_contents($configPath, json_encode($config, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_INVALID_UTF8_SUBSTITUTE));
     umask($mask);

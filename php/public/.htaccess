@@ -1,5 +1,6 @@
 # Ярмарка «4 сезона» — маршрутизация API (Apache/REG.RU).
-# Все запросы к /api/... направляются на front controller index.php.
+# Все запросы внутри каталога (например /fair-api/...) направляются на
+# front controller index.php; маршруты в index.php относительны точке монтирования.
 
 Options -Indexes
 DirectoryIndex index.php

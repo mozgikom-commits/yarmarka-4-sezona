@@ -7,14 +7,16 @@ require_once __DIR__ . '/../lib/store.php';
 /*
  * Ярмарка «4 сезона» — front controller API (REG.RU / PHP / SQLite).
  *
- * Реализует REST-контракт, совместимый с js/fair-data.js (режим backend=php):
- *   GET  /api/public/events, /api/public/registry
- *   POST /api/auth/login, /api/auth/logout, GET /api/auth/session
- *   POST /api/upload, GET /api/uploads/{file}
- *   GET|POST /api/events, PUT|DELETE /api/events/{id}
- *   POST /api/events/{id}/photos, POST /api/events/{id}/documents
- *   GET|POST /api/registry, POST /api/registry/import, PUT|DELETE /api/registry/{id}
- *   GET  /api/change-log, GET /api/health
+ * Реализует REST-контракт, совместимый с js/fair-data.js (режим backend=php).
+ * Маршруты относительны точке монтирования (на боевом REG.RU это /fair-api,
+ * локально — корень или YARMARKA_API_MOUNT):
+ *   GET  /public/events, /public/registry
+ *   POST /auth/login, /auth/logout, GET /auth/session
+ *   POST /upload, GET /uploads/{file}
+ *   GET|POST /events, PUT|DELETE /events/{id}
+ *   POST /events/{id}/photos, POST /events/{id}/documents
+ *   GET|POST /registry, POST /registry/import, PUT|DELETE /registry/{id}
+ *   GET  /change-log, GET /health
  */
 
 $config = fairConfig();
@@ -45,7 +47,7 @@ try {
     $db = fairDb();
 
     // ------------------------------------------------------------------ health
-    if ($method === 'GET' && $path === '/api/health') {
+    if ($method === 'GET' && $path === '/health') {
         $diskFree = null;
         $diskTotal = null;
         try {
@@ -71,18 +73,18 @@ try {
     }
 
     // ------------------------------------------------------- публичные данные
-    if ($method === 'GET' && $path === '/api/public/events') {
+    if ($method === 'GET' && $path === '/public/events') {
         fairRespond(200, fairPublicEvents($db));
     }
-    if ($method === 'GET' && $path === '/api/public/registry') {
+    if ($method === 'GET' && $path === '/public/registry') {
         fairRespond(200, fairPublicRegistry($db));
     }
 
     // ------------------------------------------------------------- загрузка
-    if ($method === 'GET' && str_starts_with($path, '/api/uploads/')) {
+    if ($method === 'GET' && str_starts_with($path, '/uploads/')) {
         fairServeUpload($path);
     }
-    if ($method === 'POST' && $path === '/api/upload') {
+    if ($method === 'POST' && $path === '/upload') {
         $session = fairRequireAuth($db);
         fairRequireCsrf($session);
         $bucket = is_string($query['bucket'] ?? null) ? $query['bucket'] : '';
@@ -91,24 +93,24 @@ try {
     }
 
     // ------------------------------------------------------------- авторизация
-    if ($method === 'POST' && $path === '/api/auth/login') {
+    if ($method === 'POST' && $path === '/auth/login') {
         fairHandleLogin($db, $config);
     }
-    if ($method === 'POST' && $path === '/api/auth/logout') {
+    if ($method === 'POST' && $path === '/auth/logout') {
         fairRevokeSession($db, fairBearerToken());
         fairRespond(200, ['ok' => true]);
     }
-    if ($method === 'GET' && $path === '/api/auth/session') {
+    if ($method === 'GET' && $path === '/auth/session') {
         $session = fairRequireAuth($db);
         fairRespond(200, ['user' => ['email' => $session['email'], 'role' => $session['role']]]);
     }
 
     // ---------------------------------------------------------- мероприятия
-    if ($path === '/api/events' && $method === 'GET') {
+    if ($path === '/events' && $method === 'GET') {
         fairRequireRole($db, ['admin', 'editor']);
         fairRespond(200, fairFetchEventRows($db));
     }
-    if ($path === '/api/events' && $method === 'POST') {
+    if ($path === '/events' && $method === 'POST') {
         $session = fairRequireRole($db, ['admin', 'editor']);
         fairRequireCsrf($session);
         $body = fairReadJsonBody(1048576);
@@ -126,7 +128,7 @@ try {
         fairRespond(201, $after);
     }
 
-    if (preg_match('#^/api/events/([^/]+)$#D', $path, $m) === 1) {
+    if (preg_match('#^/events/([^/]+)$#D', $path, $m) === 1) {
         $eventId = $m[1];
         if ($method === 'PUT') {
             $session = fairRequireRole($db, ['admin', 'editor']);
@@ -174,7 +176,7 @@ try {
         }
     }
 
-    if (preg_match('#^/api/events/([^/]+)/(photos|documents)$#D', $path, $m) === 1) {
+    if (preg_match('#^/events/([^/]+)/(photos|documents)$#D', $path, $m) === 1) {
         $eventId = $m[1];
         $kind = $m[2];
         if ($method === 'POST') {
@@ -209,11 +211,11 @@ try {
     }
 
     // --------------------------------------------------------------- реестр
-    if ($path === '/api/registry' && $method === 'GET') {
+    if ($path === '/registry' && $method === 'GET') {
         fairRequireRole($db, ['admin']);
         fairRespond(200, fairListRegistry($db));
     }
-    if ($path === '/api/registry' && $method === 'POST') {
+    if ($path === '/registry' && $method === 'POST') {
         $session = fairRequireRole($db, ['admin']);
         fairRequireCsrf($session);
         $body = fairReadJsonBody(1048576);
@@ -233,7 +235,7 @@ try {
         fairLog($db, 'registry', $id, 'insert', null, $after, $session['email']);
         fairRespond(201, $after);
     }
-    if ($path === '/api/registry/import' && $method === 'POST') {
+    if ($path === '/registry/import' && $method === 'POST') {
         $session = fairRequireRole($db, ['admin']);
         fairRequireCsrf($session);
         $body = fairReadJsonBody(10485760);
@@ -271,7 +273,7 @@ try {
         fairRespond(200, ['imported' => $imported, 'skipped' => 0]);
     }
 
-    if (preg_match('#^/api/registry/([^/]+)$#D', $path, $m) === 1) {
+    if (preg_match('#^/registry/([^/]+)$#D', $path, $m) === 1) {
         $registryId = $m[1];
         if ($method === 'PUT') {
             $session = fairRequireRole($db, ['admin']);
@@ -314,7 +316,7 @@ try {
     }
 
     // ---------------------------------------------------------------- журнал
-    if ($method === 'GET' && $path === '/api/change-log') {
+    if ($method === 'GET' && $path === '/change-log') {
         fairRequireRole($db, ['admin']);
         fairRespond(200, fairListChangeLog($db));
     }
@@ -359,7 +361,7 @@ function fairHandleLogin(PDO $db, array $config): never
 
 function fairServeUpload(string $path): never
 {
-    $file = basename(substr($path, strlen('/api/uploads/')));
+    $file = basename(substr($path, strlen('/uploads/')));
     if (preg_match('/^[A-Za-z0-9][A-Za-z0-9.-]*$/D', $file) !== 1) {
         http_response_code(404);
         echo 'Not found';

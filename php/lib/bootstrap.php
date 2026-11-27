@@ -121,6 +121,29 @@ function fairRequestMethod(): string
     return strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
 }
 
+/** Базовая часть URL, по которой смонтирован API (например "/fair-api").
+ *  В production определяется по расположению index.php относительно
+ *  DOCUMENT_ROOT; для локального тестового сервера задаётся переменной
+ *  окружения YARMARKA_API_MOUNT (иначе — пусто, API в корне). */
+function fairMountPath(): string
+{
+    $override = getenv('YARMARKA_API_MOUNT');
+    if (is_string($override) && trim($override) !== '' && trim($override) !== '/') {
+        return '/' . trim(trim($override), '/');
+    }
+    $docroot = isset($_SERVER['DOCUMENT_ROOT']) && is_string($_SERVER['DOCUMENT_ROOT'])
+        ? realpath($_SERVER['DOCUMENT_ROOT']) : false;
+    $script = isset($_SERVER['SCRIPT_FILENAME']) && is_string($_SERVER['SCRIPT_FILENAME'])
+        ? realpath($_SERVER['SCRIPT_FILENAME']) : false;
+    if ($docroot !== false && $script !== false && str_starts_with($script, $docroot . '/')) {
+        $rel = substr(dirname($script), strlen($docroot));
+        $rel = str_replace('\\', '/', $rel);
+        return rtrim($rel, '/');
+    }
+    $dir = dirname(str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? '/index.php')));
+    return ($dir === '/' || $dir === '.' || $dir === '') ? '' : rtrim($dir, '/');
+}
+
 function fairRequestPath(): string
 {
     $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
@@ -128,6 +151,14 @@ function fairRequestPath(): string
         $path = '/';
     }
     $path = rawurldecode($path);
+    $mount = fairMountPath();
+    if ($mount !== '') {
+        if ($path === $mount) {
+            $path = '/';
+        } elseif (str_starts_with($path, $mount . '/')) {
+            $path = substr($path, strlen($mount));
+        }
+    }
     return $path;
 }
 
@@ -175,7 +206,7 @@ function fairApiBaseUrl(): string
     $https = (($_SERVER['HTTPS'] ?? '') === 'on')
         || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    return ($https ? 'https' : 'http') . '://' . $host;
+    return ($https ? 'https' : 'http') . '://' . $host . fairMountPath();
 }
 
 // ---------------------------------------------------------------------------
@@ -431,7 +462,8 @@ function fairEnsureUploadDir(): void
 }
 
 /** Принимает загруженный файл (сырое тело), проверяет тип/размер и возвращает
- *  относительный URL вида /api/uploads/<file>. */
+ *  абсолютный URL вида https://<api-хост><mount>/uploads/<file> (фронтенд
+ *  находится на другом origin, поэтому URL должен быть абсолютным). */
 function fairAcceptUpload(array $config, string $bucket, string $name): string
 {
     if (!in_array($bucket, ['event-covers', 'event-photos', 'event-documents'], true)) {
@@ -477,5 +509,5 @@ function fairAcceptUpload(array $config, string $bucket, string $name): string
     } finally {
         umask($mask);
     }
-    return '/api/uploads/' . $fileName;
+    return fairApiBaseUrl() . '/uploads/' . $fileName;
 }

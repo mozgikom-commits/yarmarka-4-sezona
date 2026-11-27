@@ -1,6 +1,6 @@
 # ПАСПОРТ ПРОЕКТА — ЯРМАРКА «4 СЕЗОНА»
 Обновлено: 27.11.2026
-Статус: рабочий сайт; публикация PR #6 разрешена владельцем. Backend/auth/storage переведён с Supabase на REG.RU (PHP + SQLite); релиз ждёт доступа к хостингу REG.RU.
+Статус: рабочий сайт; публикация PR #6 разрешена владельцем. Backend/auth/storage — REG.RU (PHP + SQLite) на уже оплаченном `mozgikomlab.ru` по изолированному пути `/fair-api/`, отдельный SQLite вне webroot (LAB/Межгород не затрагиваются); код адаптирован и локально проверен, релиз ждёт SSH/SFTP-доступа к каталогу выше webroot.
 
 ## Назначение
 Единый источник контекста для продолжения работы в новых чатах. Перед изменениями сверять этот паспорт, актуальный код, отчёты и действующий сайт. Не считать сведения паспорта заменой проверки текущего состояния.
@@ -151,3 +151,46 @@ P2: проверить доступность всех форм и PDF без а
 Документы: `docs/REG_RU_SETUP.md` (новая инструкция), `docs/RELEASE_ROLLBACK.md` и `docs/PR_DRAFT.md` переписаны под REG.RU, `docs/ADMIN_SETUP.md` помечен устаревшим. `php/` не содержит секретов (все секреты — в `yarmarka-private` на сервере) и публикуется GitHub Pages как статический исходник без риска.
 
 Следующий шаг: после появления доступа REG.RU — разместить `php/public/`, создать `yarmarka-private` вне webroot, `install.php` (администратор с надёжным паролем), live E2E, затем merge PR #6 и переключение Tilda на `backend=php`.
+
+## 27.11.2026 — P0: REG.RU `/fair-api/` на mozgikomlab.ru (lead, согласовано TASK_FAIR_REGRU_P0)
+Владелец уточнил развёртывание: выполнять на **существующем** REG.RU (`mozgikomlab.ru`)
+без расширения тарифа, лимит сайтов 1, отдельный поддомен не создавать; изолированный
+`/fair-api/` на mozgikomlab.ru, отдельный SQLite вне webroot; LAB и «Межгород Онлайн»
+не затрагивать. Реализация не дублировалась — адаптирован уже созданный `php/`.
+
+Адаптировано (локально, без публикации в production):
+- `php/lib/bootstrap.php`: точка монтирования `fairMountPath()` (авто по
+  `SCRIPT_FILENAME`/`DOCUMENT_ROOT`; для тестов `YARMARKA_API_MOUNT`), маршруты теперь
+  относительны монтированию, `fairApiBaseUrl()` включает монтирование, URL загрузки —
+  абсолютный (`https://<api-хост>/fair-api/uploads/<file>`, фронтенд на другом origin).
+- `php/public/index.php`: маршруты без жёсткого префикса `/api` (`/health`,
+  `/public/events`, `/auth/*`, `/events`, `/registry`, `/change-log`, `/uploads/*`).
+- `php/cli/install.php`: `allowedOrigins` по умолчанию только фронтенд ярмарки
+  (`https://mozgikom-commits.github.io`, `https://xn--4-8sboi4afs.online` — punycode
+  `4сезона.online`), убран unicode-дубль и localhost; добавлен повторяемый `--origin=…`
+  и `YARMARKA_DATA_DIR` (путь к seed-JSON).
+- Тесты: `php-api-e2e.cjs` и `php-frontend-e2e.cjs` переведены на `FAIR_API_MOUNT`
+  (по умолчанию `/fair-api`).
+
+Проверено локально (PHP 8.3.14, `.php-bin`, сервер смонтирован на `/fair-api`):
+- API E2E — **26/26 PASS** (health, публичные данные, 401 без токена, login, CSRF 403,
+  CRUD мероприятий/реестра, журнал, загрузка + абсолютный URL + отдача, отклонение SVG,
+  logout, 429 после лимита).
+- Браузерный E2E — **15/15 PASS** (афиша, реестр 102, документы без авторизации, вход,
+  дашборд 102, цикл создание→публикация→показ, поиск по ИНН, мобильная 390px) на свежей БД;
+  кросс-доменный CORS от `127.0.0.1:4173` работает.
+- CORS spot-check: разрешённый Origin → ACAO + методы/заголовки; посторонний Origin → без
+  ACAO и 403 на изменяющих методах; OPTIONS preflight → 204.
+- `/fair-api/health` → 200, `/api/health` (LAB-путь) → 404 (не пересекается с LAB).
+
+Блокер релиза (шаг владельца, конкретно): SSH/SFTP-доступ к каталогу **выше webroot**
+`mozgikomlab.ru` (ограниченный FTPS-аккаунт LAB туда не достаёт, а SQLite обязан лежать
+вне webroot), либо отдельный FTP/SSH-аккаунт с домом = каталог выше webroot; способ
+развёртывания — в локальный `.env.regru` (не в чат); подтверждение публичного URL
+`https://mozgikomlab.ru/fair-api`. Полный порядок — `docs/RELEASE_ROLLBACK.md`
+(раздел «Шаг владельца»), раскладка/команды — `docs/REG_RU_SETUP.md`.
+
+Документы: `docs/REG_RU_SETUP.md`, `docs/RELEASE_ROLLBACK.md`, `docs/PR_DRAFT.md`
+переписаны под `/fair-api/`. `php/` не содержит секретов (все секреты — в
+`yarmarka-private` на сервере). Merge PR #6 и переключение Tilda — после развёртывания
+бэкенда и live E2E (не выполнялись).

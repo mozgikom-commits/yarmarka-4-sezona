@@ -2,7 +2,8 @@
  *
  * backend: "static"    — публичный сайт читает локальные JSON (без бэкенда);
  *           "supabase" — Supabase (Postgres + Auth + Storage);
- *           "php"      — REG.RU (PHP + SQLite), REST /api/*;
+ *           "php"      — REG.RU (PHP + SQLite), REST (маршруты относительны apiBase,
+ *                        на боевом REG.RU apiBase = https://mozgikomlab.ru/fair-api);
  *           "local"    — локальный тестовый Node-сервер (./tools/local-server).
  *
  * Порядок определения конфигурации:
