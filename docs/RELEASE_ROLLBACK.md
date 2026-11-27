@@ -1,9 +1,10 @@
 # План релиза и отката — Ярмарка «4 сезона» (PR #6, backend REG.RU `/fair-api/`)
 
-Статус: **разрешение владельца на публикацию получено (26–27.11.2026)**. Supabase
-отменён; backend/auth/storage — REG.RU (PHP 8.1+ / PDO SQLite) на **уже оплаченном**
-`mozgikomlab.ru`, изолированный путь `/fair-api/`, отдельный SQLite **вне webroot**.
-Без отдельного поддомена и без расширения тарифа; LAB и «Межгород Онлайн» не меняются.
+Статус: **выполнено 27.11.2026** — backend REG.RU развёрнут на `mozgikomlab.ru/fair-api/`
+(отдельный SQLite вне webroot), PR #6 слит в `main` (GitHub Pages публикует `/admin/`),
+живой E2E 26/26 и вход в боевую админку проверены. Supabase отменён; LAB и «Межгород
+Онлайн» не меняются. Остался шаг владельца: вставить обновлённый блок Tilda T123
+(`backend='php'`, `apiBase='https://mozgikomlab.ru/fair-api'`, шаблон в `tilda-loader-template.html`).
 
 ## Предусловия (до релиза)
 

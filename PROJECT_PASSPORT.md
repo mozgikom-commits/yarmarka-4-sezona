@@ -1,6 +1,6 @@
 # ПАСПОРТ ПРОЕКТА — ЯРМАРКА «4 СЕЗОНА»
 Обновлено: 27.11.2026
-Статус: рабочий сайт; публикация PR #6 разрешена владельцем. Backend/auth/storage — REG.RU (PHP + SQLite) на уже оплаченном `mozgikomlab.ru` по изолированному пути `/fair-api/`, отдельный SQLite вне webroot (LAB/Межгород не затрагиваются); код адаптирован и локально проверен, релиз ждёт SSH/SFTP-доступа к каталогу выше webroot.
+Статус: боевой backend REG.RU (PHP + SQLite) развёрнут по `https://mozgikomlab.ru/fair-api/` (SQLite вне webroot, LAB/Межгород не затронуты); PR #6 слит в `main` (GitHub Pages публикует `/admin/` и мероприятия — 404 устранён); вход в боевую админку проверен (дашборд, реестр 102). Остался шаг владельца: вставить обновлённый блок Tilda T123 (backend=php) — шаблон готов в `tilda-loader-template.html`.
 
 ## Назначение
 Единый источник контекста для продолжения работы в новых чатах. Перед изменениями сверять этот паспорт, актуальный код, отчёты и действующий сайт. Не считать сведения паспорта заменой проверки текущего состояния.
@@ -194,3 +194,38 @@ P2: проверить доступность всех форм и PDF без а
 переписаны под `/fair-api/`. `php/` не содержит секретов (все секреты — в
 `yarmarka-private` на сервере). Merge PR #6 и переключение Tilda — после развёртывания
 бэкенда и live E2E (не выполнялись).
+
+## 27.11.2026 — P0: развёртывание /fair-api/ на REG.RU + публикация PR #6 (lead)
+Владелец разрешил завершение публикации и настроил SSH-доступ (`u3732046@server291.hosting.reg.ru`,
+ключ `~/.ssh/yarmarka_regru`). Реализация не дублировалась — использован адаптированный `php/`.
+
+Развёрнуто на REG.RU (через SSH/scp, LAB и «Межгород Онлайн» не затрагивались):
+- Webroot `www/mozgikomlab.ru/`: `fair-api/{index.php,.htaccess}`, `lib/{bootstrap,store}.php`,
+  `cli/{install,backup,restore}.php`, `schema.sql`.
+- Вне webroot: `www/yarmarka-private/` (0700; `config.json` 0600, `fair.sqlite` 0600, `uploads/`,
+  `backups/`) и `www/data/` (seed `participants-public.json`, `events.json`).
+- `install.php` выполнен: администратор `admin@4sezona.ru` (роль `admin`, пароль сгенерирован и
+  сохранён в локальном `.env.regru`, gitignore/0600 — не в чат), реестр 102 + 4 демо-мероприятия;
+  `allowedOrigins` только `https://mozgikom-commits.github.io` и `https://xn--4-8sboi4afs.online`.
+- Живой API: `/fair-api/health` → PHP 8.3.37, sqlite/openssl/mbstring/sodium, https; публичные
+  события/реестр отдаются; CORS корректный.
+
+Найден и исправлен боевой дефект: на CGI/FastCGI REG.RU заголовок `Authorization` отбрасывался,
+поэтому после успешного `login` все авторизованные запросы давали 401. Исправлено пробросом
+`SetEnvIf Authorization ... HTTP_AUTHORIZATION` в `fair-api/.htaccess` (коммит `c0f4367`).
+
+Проверено:
+- Live API E2E `tools/qa/php-api-e2e.cjs` против `https://mozgikomlab.ru` (`FAIR_API_MOUNT=/fair-api`) — **26/26 PASS**.
+- Боевой вход в админку (headless Chrome): `tools/qa/prod-admin-login.cjs` — экран входа виден,
+  вход администратора успешен, дашборд показывает **102** участника (GitHub Pages `/admin/` + живой API).
+- PR #6 размечен ready-for-review и слит в `main` (merge-коммит `48028ebb`); GitHub Pages пересобрался,
+  `/admin/` и `/events.html` отдают 200 (404 устранён).
+
+Осталось (шаг владельца, ~5 мин): вставить в блок Tilda T123 обновлённый загрузчик из
+`tilda-loader-template.html` (там `backend='php'`, `apiBase='https://mozgikomlab.ru/fair-api'`,
+версия `v=20261127-1`) — сейчас живой домен всё ещё грузит старый блок (`backend=static`). После
+вставки вход сотрудников пойдёт через `https://xn--4-8sboi4afs.online/admin/`. Откат — вернуть
+`backend='static'` в блоке или revert merge-коммита `48028ebb`.
+
+Документы: `docs/REG_RU_SETUP.md` (раскладка/команды), `docs/RELEASE_ROLLBACK.md` (план/откат).
+Доступы и пароль администратора — только в локальном `.env.regru` (в git не попадает).
