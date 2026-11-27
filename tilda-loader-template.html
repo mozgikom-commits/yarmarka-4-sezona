@@ -6,16 +6,22 @@
   var host = document.getElementById('yarmarka-host');
 
   // ── Бэкенд ярмарки ────────────────────────────────────────────────────────
-  // "static"   — публичный сайт читает локальные JSON (текущий режим).
+  // "php"      — REG.RU (PHP + SQLite) по https://mozgikomlab.ru/fair-api
+  //              (боевой режим с 27.11.2026).
+  // "static"   — публичный сайт читает локальные JSON (запасной/откат).
   // "supabase" — Supabase (Auth + Postgres + Storage). Реальные ключи вставляются
   //              В БЛОКЕ TILDA, не в этом шаблоне и не в репозитории GitHub.
   //              anon-ключ публичный; service_role-ключ сюда НЕ вставлять.
-  var backend = 'static';
+  var backend = 'php';
+  var apiBase = 'https://mozgikomlab.ru/fair-api';
   var supabaseUrl = '';     // https://<project-ref>.supabase.co
   var supabaseAnonKey = ''; // публичный anon-ключ (Project Settings → API)
 
-  var query = 'v=20261119-4';
-  if (backend === 'supabase' && supabaseUrl && supabaseAnonKey) {
+  var query = 'v=20261127-1';
+  if (backend === 'php' && apiBase) {
+    query += '&backend=php'
+      + '&apiBase=' + encodeURIComponent(apiBase);
+  } else if (backend === 'supabase' && supabaseUrl && supabaseAnonKey) {
     query += '&backend=supabase'
       + '&supabaseUrl=' + encodeURIComponent(supabaseUrl)
       + '&supabaseAnonKey=' + encodeURIComponent(supabaseAnonKey);
