@@ -46,6 +46,17 @@ try {
 
     // ------------------------------------------------------------------ health
     if ($method === 'GET' && $path === '/api/health') {
+        $diskFree = null;
+        $diskTotal = null;
+        try {
+            $probeDir = fairPrivateDir();
+            $df = @disk_free_space($probeDir);
+            $dt = @disk_total_space($probeDir);
+            $diskFree = ($df !== false && $df !== null) ? (int) $df : null;
+            $diskTotal = ($dt !== false && $dt !== null) ? (int) $dt : null;
+        } catch (Throwable) {
+            // На отдельных хостингах disk_free_space недоступен — не блокируем health.
+        }
         fairRespond(200, [
             'ok' => true,
             'php_version_id' => PHP_VERSION_ID,
@@ -54,6 +65,8 @@ try {
             'openssl' => extension_loaded('openssl'),
             'sodium' => extension_loaded('sodium'),
             'https' => (($_SERVER['HTTPS'] ?? '') === 'on') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https'),
+            'disk_free_bytes' => $diskFree,
+            'disk_total_bytes' => $diskTotal,
         ]);
     }
 
