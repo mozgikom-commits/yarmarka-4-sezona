@@ -80,10 +80,24 @@ if (!mkdir($snapshot, 0700, true)) {
 
 $mask = umask(0077);
 try {
-    $db = new PDO('sqlite:' . $dbPath, null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-    $db->exec('PRAGMA busy_timeout = 5000');
     $target = $snapshot . '/fair.sqlite';
-    $db->exec("VACUUM INTO '" . str_replace("'", "''", $target) . "'");
+    if (class_exists('SQLite3')) {
+        // Онлайн-бэкап через API SQLite3 — работает и на SQLite 3.26.0,
+        // где VACUUM INTO отсутствует (требуется >= 3.27).
+        $src = new SQLite3($dbPath);
+        $src->busyTimeout(5000);
+        $dst = new SQLite3($target);
+        if (!$src->backup($dst)) {
+            throw new RuntimeException('SQLite3 backup failed: ' . $src->lastErrorMsg());
+        }
+        $dst->close();
+        $src->close();
+    } else {
+        // Fallback для серверов с SQLite >= 3.27 (VACUUM INTO).
+        $db = new PDO('sqlite:' . $dbPath, null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $db->exec('PRAGMA busy_timeout = 5000');
+        $db->exec("VACUUM INTO '" . str_replace("'", "''", $target) . "'");
+    }
 } catch (Throwable $e) {
     umask($mask);
     fwrite(STDERR, "Снимок БД не удался: " . get_class($e) . ': ' . $e->getMessage() . "\n");
