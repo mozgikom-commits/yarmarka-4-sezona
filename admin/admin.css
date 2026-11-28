@@ -1,4 +1,8 @@
 /* Кабинет администратора — светлый минималистичный интерфейс, фирменные цвета. */
+/* Атрибут hidden должен всегда скрывать элемент (иначе display:grid у .admin-app/
+   .admin-shell перекрывает браузерный [hidden]{display:none}, и форма входа не
+   исчезает после авторизации). */
+[hidden] { display: none !important; }
 :root {
   --cream: #fff8e9;
   --paper: #fffdf7;
