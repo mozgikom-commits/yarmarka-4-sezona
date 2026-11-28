@@ -338,14 +338,14 @@ function fairHandleLogin(PDO $db, array $config): never
         fairRespond(429, ['error' => 'too-many-attempts']);
     }
     $body = fairReadJsonBody(1048576);
-    $email = is_string($body['email'] ?? null) ? mb_strtolower(trim($body['email'])) : '';
+    $login = is_string($body['email'] ?? null) ? mb_strtolower(trim($body['email'])) : '';
     $password = is_string($body['password'] ?? null) ? $body['password'] : '';
-    if ($email === '' || $password === '' || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+    if ($login === '' || $password === '' || !fairValidLogin($login)) {
         fairLoginRecord($db, $config);
         fairRespond(401, ['error' => 'unauthorized']);
     }
     $stmt = $db->prepare('SELECT email, password_hash, role FROM admin_users WHERE email = ?');
-    $stmt->execute([$email]);
+    $stmt->execute([$login]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!is_array($user) || !password_verify($password, (string) $user['password_hash'])) {
         fairLoginRecord($db, $config);

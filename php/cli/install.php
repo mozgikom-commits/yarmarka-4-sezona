@@ -17,7 +17,10 @@ require_once __DIR__ . '/../lib/bootstrap.php';
  *
  * Использование:
  *   php cli/install.php --email=admin@example.ru [--password=...] [--role=admin] [--origin=...]
+ *   php cli/install.php --email=ADMINDEV [--role=admin]   # логин-имя (не e-mail)
  *   php cli/install.php --email=admin@example.ru   # пароль будет сгенерирован и показан
+ *   FAIR_ADMIN_PASSWORD=... php cli/install.php --email=ADMINDEV --role=admin
+ *       # пароль из переменной окружения (не попадает в argv/историю команд)
  *   # --origin=<https://...> (можно несколько) — доп. разрешённые Origin поверх умолчаний.
  */
 
@@ -142,8 +145,8 @@ function fairSeed(PDO $db): void
 
 function fairInstallAdmin(PDO $db, string $email, ?string $password, string $role): void
 {
-    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-        throw new InvalidArgumentException('Invalid email');
+    if (!fairValidLogin($email)) {
+        throw new InvalidArgumentException('Invalid login (use e-mail or a username)');
     }
     if (!in_array($role, ['admin', 'editor'], true)) {
         throw new InvalidArgumentException('Invalid role');
@@ -183,6 +186,14 @@ if ($email === null || trim($email) === '') {
 }
 $email = mb_strtolower(trim($email));
 $password = fairArg('password');
+if ($password === null || $password === '') {
+    // Пароль можно передать переменной окружения (не попадает в argv/историю
+    // команд и не хранится в репозитории). Используется при боевой установке.
+    $envPassword = getenv('FAIR_ADMIN_PASSWORD');
+    if (is_string($envPassword) && $envPassword !== '') {
+        $password = $envPassword;
+    }
+}
 $role = fairArg('role', 'admin') ?? 'admin';
 
 $dir = fairPrivateDir();

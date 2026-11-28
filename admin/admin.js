@@ -33,7 +33,7 @@
   const showApp = (user) => {
     $("#login-view").hidden = true;
     $("#app-view").hidden = false;
-    $("#sidebar-user").textContent = user?.email ? `Вход: ${user.email}` : "";
+    $("#sidebar-user").textContent = user?.email ? `Логин: ${user.email}` : "";
     applyRoleGating();
     loadDashboard();
   };
