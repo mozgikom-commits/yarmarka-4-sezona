@@ -45,12 +45,26 @@ const __fairFromParams = () => {
     apiBase: p.get("apiBase") || ""
   };
 };
-const __fairDefault = () => ({
-  backend: (typeof location !== "undefined" && location.port === "4173") ? "local" : "static",
-  supabaseUrl: "",
-  supabaseAnonKey: "",
-  apiBase: "/api"
-});
+// Боевой REST-бэкенд админки (REG.RU / PHP + SQLite). Публичный URL, не секрет.
+const __FAIR_PROD_API_BASE = "https://mozgikomlab.ru/fair-api";
+
+/** Признак страницы кабинета администратора (…/admin/). */
+const __fairIsAdminPage = () => {
+  if (typeof location === "undefined" || !location.pathname) return false;
+  return /(^|\/)admin\//.test(location.pathname);
+};
+
+const __fairDefault = () => {
+  if (typeof location !== "undefined" && location.port === "4173") {
+    return { backend: "local", supabaseUrl: "", supabaseAnonKey: "", apiBase: "/api" };
+  }
+  // Кабинет администратора по умолчанию работает с боевым PHP-бэкендом без
+  // дополнительных параметров URL (ссылка «Вход для сотрудников» → /admin/).
+  if (__fairIsAdminPage()) {
+    return { backend: "php", supabaseUrl: "", supabaseAnonKey: "", apiBase: __FAIR_PROD_API_BASE };
+  }
+  return { backend: "static", supabaseUrl: "", supabaseAnonKey: "", apiBase: "/api" };
+};
 const __fairSanitize = (cfg) => ({
   backend: __FAIR_BACKENDS.includes(cfg && cfg.backend) ? cfg.backend : "static",
   supabaseUrl: typeof (cfg && cfg.supabaseUrl) === "string" ? cfg.supabaseUrl : "",
