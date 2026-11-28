@@ -8,6 +8,8 @@
   const today = () => new Date().toISOString().slice(0, 10);
 
   const state = { events: [], registry: [], statusFilter: "all", eventFilter: "all" };
+  let userIntent = null;   // null — действия ещё не было; "app" — вошёл; "login" — вышел
+  let submitting = false;  // защита от повторной отправки формы входа
   const IMG_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
   const DOC_TYPES = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
   const MAX_IMG = 10 * 1024 * 1024;
@@ -53,6 +55,8 @@
 
   $("#login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (submitting) return;
+    submitting = true;
     const btn = $("#login-submit");
     const err = $("#login-error");
     err.hidden = true;
@@ -62,6 +66,7 @@
     const password = e.target.password.value;
     try {
       const session = await window.fairData.login(email, password);
+      userIntent = "app";
       showApp(session?.user || { email });
       toast("Вы вошли в кабинет");
     } catch (ex) {
@@ -70,6 +75,7 @@
         : "Не удалось выполнить вход: " + (ex.message || ex);
       err.hidden = false;
     } finally {
+      submitting = false;
       btn.disabled = false;
       btn.textContent = "Войти";
     }
@@ -77,6 +83,7 @@
 
   $("#logout-btn").addEventListener("click", async () => {
     await window.fairData.logout();
+    userIntent = "login";
     showLogin();
     toast("Вы вышли из кабинета");
   });
@@ -410,6 +417,7 @@
   updateBackendNote();
   (async () => {
     const session = await window.fairData.getSession().catch(() => null);
+    if (userIntent !== null) return; // пользователь уже вошёл/вышел на этой странице — не переопределять
     if (session && session.user) showApp(session.user);
     else showLogin();
   })();

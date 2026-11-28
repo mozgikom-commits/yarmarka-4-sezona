@@ -80,6 +80,15 @@ const ok = (name, cond, detail = "") => {
   await page.waitForSelector("#app-view:not([hidden])", { timeout: 20000 });
   await waitDashboard(page);
   ok("7. Повторный вход успешен", true);
+
+  // Сохранение сессии после обновления страницы
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await page.waitForFunction(() => window.fairData && window.fairData.backendType, { timeout: 20000 });
+  await page.waitForSelector("#app-view:not([hidden])", { timeout: 20000 });
+  await waitDashboard(page);
+  ok("7b. Сессия сохранена после обновления страницы", true);
+  await page.screenshot({ path: path.join(OUT, "prod-09-session-after-refresh-desktop.png") });
+
   await page.click("#logout-btn");
   await page.waitForSelector("#login-view:not([hidden])", { timeout: 20000 });
   await ctx.close();
